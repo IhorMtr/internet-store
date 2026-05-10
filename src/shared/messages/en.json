@@ -1,0 +1,74 @@
+{
+  "common": {
+    "texts": {
+      "language": "Language",
+      "ukrainian": "Ukrainian",
+      "english": "English"
+    }
+  },
+  "header": {
+    "brand": "ShopCore",
+    "menu": "Menu",
+    "settings": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "signOut": "Sign out",
+    "signingOut": "Signing out...",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "themeSwitcher": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in",
+      "fields": {
+        "email": {
+          "label": "Email",
+          "placeholder": "you@example.com"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "Enter your password"
+        }
+      },
+      "submit": "Sign in",
+      "submitLoading": "Signing in...",
+      "registerPrompt": "No account?",
+      "registerLink": "Create one"
+    },
+    "register": {
+      "title": "Create account",
+      "fields": {
+        "fullName": {
+          "label": "Full name",
+          "placeholder": "Your name"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "you@example.com"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "At least 8 characters"
+        }
+      },
+      "submit": "Create account",
+      "submitLoading": "Creating...",
+      "loginPrompt": "Already registered?",
+      "loginLink": "Sign in"
+    },
+    "validation": {
+      "emailInvalid": "Enter a valid email",
+      "emailRequired": "Email is required",
+      "passwordMinLength": "Password must contain at least 8 characters",
+      "passwordRequired": "Password is required"
+    },
+    "errors": {
+      "network": "Network error. Please check your connection.",
+      "unexpected": "Unexpected error"
+    }
+  }
+}

@@ -1,26 +1,170 @@
 @import "tailwindcss";
 
+/* ===================== DESIGN TOKENS ===================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  --ds-color-canvas: #f3efe7;
+  --ds-color-surface: #fbfaf6;
+  --ds-color-surface-raised: #f7f4ec;
+  --ds-color-text: #262820;
+  --ds-color-text-muted: #6f725f;
+  --ds-color-border: #ded7c7;
+  --ds-color-accent: #68784f;
+  --ds-color-accent-hover: #566640;
+  --ds-color-accent-soft: #dbe2c9;
+  --ds-color-accent-contrast: #f8f5ec;
+  --ds-color-focus: #8a9a65;
+  --ds-color-danger: #9a5a4d;
+
+  --ds-font-size-caption: 0.75rem;
+  --ds-font-size-body: 0.9375rem;
+  --ds-font-size-title: 1.25rem;
+  --ds-font-size-heading: 1.75rem;
+  --ds-font-size-display: 2.5rem;
+
+  --ds-line-height-tight: 1.15;
+  --ds-line-height-normal: 1.55;
+
+  --ds-space-1: 0.5rem;
+  --ds-space-2: 0.75rem;
+  --ds-space-3: 1rem;
+  --ds-space-4: 1.5rem;
+  --ds-space-5: 2rem;
+  --ds-space-6: 3rem;
+
+  --ds-radius-sm: 0.375rem;
+  --ds-radius-md: 0.625rem;
+  --ds-radius-lg: 0.875rem;
+
+  --ds-shadow-soft: 0 1px 2px rgb(58 61 47 / 0.06), 0 10px 30px rgb(58 61 47 / 0.08);
+  --ds-shadow-lifted: 0 14px 42px rgb(58 61 47 / 0.14);
+  --ds-shadow-focus: 0 0 0 3px rgb(138 154 101 / 0.28);
+
+  --ds-z-base: 0;
+  --ds-z-header: 20;
+  --ds-z-overlay: 40;
+
+  --ds-transition-fast: 150ms ease;
+  --ds-transition-base: 220ms ease;
+
+  --ds-container-sm: 48rem;
+  --ds-container-main: 72rem;
+  --ds-container-wide: 88rem;
 }
+
+/* ===================== TAILWIND THEME ===================== */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-canvas: var(--ds-color-canvas);
+  --color-surface: var(--ds-color-surface);
+  --color-surface-raised: var(--ds-color-surface-raised);
+  --color-primary: var(--ds-color-text);
+  --color-muted: var(--ds-color-text-muted);
+  --color-border: var(--ds-color-border);
+  --color-accent: var(--ds-color-accent);
+  --color-accent-hover: var(--ds-color-accent-hover);
+  --color-accent-soft: var(--ds-color-accent-soft);
+  --color-accent-contrast: var(--ds-color-accent-contrast);
+  --color-focus: var(--ds-color-focus);
+  --color-danger: var(--ds-color-danger);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --text-caption: var(--ds-font-size-caption);
+  --text-caption--line-height: var(--ds-line-height-normal);
+  --text-body: var(--ds-font-size-body);
+  --text-body--line-height: var(--ds-line-height-normal);
+  --text-title: var(--ds-font-size-title);
+  --text-title--line-height: 1.35;
+  --text-heading: var(--ds-font-size-heading);
+  --text-heading--line-height: var(--ds-line-height-tight);
+  --text-display: var(--ds-font-size-display);
+  --text-display--line-height: var(--ds-line-height-tight);
+
+  --spacing-1: var(--ds-space-1);
+  --spacing-2: var(--ds-space-2);
+  --spacing-3: var(--ds-space-3);
+  --spacing-4: var(--ds-space-4);
+  --spacing-5: var(--ds-space-5);
+  --spacing-6: var(--ds-space-6);
+
+  --radius-sm: var(--ds-radius-sm);
+  --radius-md: var(--ds-radius-md);
+  --radius-lg: var(--ds-radius-lg);
+
+  --shadow-soft: var(--ds-shadow-soft);
+  --shadow-lifted: var(--ds-shadow-lifted);
+  --shadow-focus: var(--ds-shadow-focus);
+
+  --z-index-base: var(--ds-z-base);
+  --z-index-header: var(--ds-z-header);
+  --z-index-overlay: var(--ds-z-overlay);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ===================== DARK THEME ===================== */
+
+html[data-theme="shopcore-dark"] {
+  color-scheme: dark;
+
+  --ds-color-canvas: #20231d;
+  --ds-color-surface: #292d25;
+  --ds-color-surface-raised: #32372d;
+  --ds-color-text: #eee9dd;
+  --ds-color-text-muted: #b5b09f;
+  --ds-color-border: #454b3d;
+  --ds-color-accent: #a1ad74;
+  --ds-color-accent-hover: #b6c486;
+  --ds-color-accent-soft: #3d4631;
+  --ds-color-accent-contrast: #1f241b;
+  --ds-color-focus: #b4bf82;
+  --ds-color-danger: #d19a8d;
+
+  --ds-shadow-soft: 0 1px 2px rgb(12 14 11 / 0.18), 0 12px 32px rgb(12 14 11 / 0.24);
+  --ds-shadow-lifted: 0 18px 48px rgb(12 14 11 / 0.34);
+  --ds-shadow-focus: 0 0 0 3px rgb(180 191 130 / 0.28);
 }
+
+/* ===================== BASE ===================== */
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  background: var(--ds-color-canvas);
+  color: var(--ds-color-text);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-size: var(--ds-font-size-body);
+  line-height: var(--ds-line-height-normal);
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  border-color: var(--ds-color-border);
+}
+
+::selection {
+  background: var(--ds-color-accent-soft);
+  color: var(--ds-color-text);
+}
+
+:focus-visible {
+  outline: 0;
+  box-shadow: var(--ds-shadow-focus);
+}
+
+/* ===================== UTILITIES ===================== */
+
+.ds-container {
+  width: min(100% - (var(--ds-space-4) * 2), var(--ds-container-main));
+  margin-inline: auto;
+}
+
+.ds-transition {
+  transition:
+    background-color var(--ds-transition-base),
+    border-color var(--ds-transition-base),
+    box-shadow var(--ds-transition-base),
+    color var(--ds-transition-base),
+    transform var(--ds-transition-fast);
 }

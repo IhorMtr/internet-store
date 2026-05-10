@@ -1,0 +1,74 @@
+{
+  "common": {
+    "texts": {
+      "language": "Мова",
+      "ukrainian": "Українська",
+      "english": "Англійська"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Увійти",
+      "fields": {
+        "email": {
+          "label": "Електронна пошта",
+          "placeholder": "you@example.com"
+        },
+        "password": {
+          "label": "Пароль",
+          "placeholder": "Введіть пароль"
+        }
+      },
+      "submit": "Увійти",
+      "submitLoading": "Вхід...",
+      "registerPrompt": "Немає акаунта?",
+      "registerLink": "Створити"
+    },
+    "register": {
+      "title": "Створити акаунт",
+      "fields": {
+        "fullName": {
+          "label": "Повне ім'я",
+          "placeholder": "Ваше ім'я"
+        },
+        "email": {
+          "label": "Електронна пошта",
+          "placeholder": "you@example.com"
+        },
+        "password": {
+          "label": "Пароль",
+          "placeholder": "Щонайменше 8 символів"
+        }
+      },
+      "submit": "Створити акаунт",
+      "submitLoading": "Створення...",
+      "loginPrompt": "Вже зареєстровані?",
+      "loginLink": "Увійти"
+    },
+    "validation": {
+      "emailInvalid": "Введіть коректну електронну пошту",
+      "emailRequired": "Електронна пошта обов'язкова",
+      "passwordMinLength": "Пароль має містити щонайменше 8 символів",
+      "passwordRequired": "Пароль обов'язковий"
+    },
+    "errors": {
+      "network": "Помилка мережі. Перевірте з'єднання.",
+      "unexpected": "Неочікувана помилка"
+    }
+  },
+  "header": {
+    "brand": "ShopCore",
+    "menu": "Меню",
+    "settings": "Налаштування",
+    "language": "Мова",
+    "theme": "Тема",
+    "signOut": "Вийти",
+    "signingOut": "Вихід...",
+    "openMenu": "Відкрити меню",
+    "closeMenu": "Закрити меню"
+  },
+  "themeSwitcher": {
+    "light": "Світла",
+    "dark": "Темна"
+  }
+}

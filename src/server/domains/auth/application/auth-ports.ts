@@ -28,6 +28,7 @@ export interface AuthRepository {
   createUser(input: CreateAuthUserInput): Promise<AuthUser>;
   findUserByEmail(email: string): Promise<AuthUserWithPassword | null>;
   findActiveUserById(userId: number): Promise<AuthUser | null>;
+  getOrCreateCustomerForUser(userId: number): Promise<number | null>;
   createSession(input: CreateAuthSessionInput): Promise<AuthSession>;
   findCurrentSession(
     refreshTokenHash: string,

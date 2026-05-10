@@ -15,6 +15,7 @@ import {
   postgresDb,
   postgresPool,
 } from "@/server/shared/db/postgres-pool";
+import type { PoolClient } from "pg";
 
 // ===================== TYPES =====================
 type AuthUserRow = {
@@ -55,6 +56,11 @@ type CurrentAuthSessionRow = AuthUserRow & {
 type PostgresError = Error & {
   code?: string;
   constraint?: string;
+};
+
+type CustomerSource = {
+  email: string;
+  fullName: string | null;
 };
 
 // ===================== HELPERS =====================
@@ -124,19 +130,68 @@ function isUniqueSessionTokenHashError(error: unknown): boolean {
   );
 }
 
+async function createCustomerForUser(
+  client: PoolClient,
+  source: CustomerSource,
+): Promise<number> {
+  const result = await client.query<{ customer_id: number }>(
+    `
+      insert into public.customers (
+        full_name,
+        phone_number,
+        email,
+        address
+      )
+      values ($1, null, $2, null)
+      returning customer_id
+    `,
+    [source.fullName ?? source.email, source.email],
+  );
+
+  return result.rows[0].customer_id;
+}
+
 // ===================== SERVICES =====================
 export const postgresAuthRepository: AuthRepository = {
   async createUser(input: CreateAuthUserInput): Promise<AuthUser> {
+    const client = await postgresPool.connect();
+
     try {
-      const result = await postgresDb.query<AuthUserRow>(
+      await client.query("begin");
+
+      const existingUser = await client.query<{ user_id: number }>(
+        `
+          select user_id
+          from public.auth_users
+          where email = $1
+          limit 1
+        `,
+        [input.email],
+      );
+
+      if (existingUser.rows[0]) {
+        throw authError.create(
+          "EMAIL_ALREADY_EXISTS",
+          "auth.emailAlreadyExists",
+          409,
+        );
+      }
+
+      const customerId =
+        input.roleName === "user"
+          ? await createCustomerForUser(client, input)
+          : null;
+
+      const result = await client.query<AuthUserRow>(
         `
           insert into public.auth_users (
             email,
             password_hash,
             full_name,
-            role_name
+            role_name,
+            customer_id
           )
-          values ($1, $2, $3, $4)
+          values ($1, $2, $3, $4, $5)
           returning
             user_id,
             role_name,
@@ -148,11 +203,25 @@ export const postgresAuthRepository: AuthRepository = {
             created_at,
             updated_at
         `,
-        [input.email, input.passwordHash, input.fullName, input.roleName],
+        [
+          input.email,
+          input.passwordHash,
+          input.fullName,
+          input.roleName,
+          customerId,
+        ],
       );
+
+      await client.query("commit");
 
       return mapUser(result.rows[0]);
     } catch (error) {
+      await client.query("rollback");
+
+      if (authError.is(error)) {
+        throw error;
+      }
+
       if (isUniqueEmailError(error)) {
         throw authError.create(
           "EMAIL_ALREADY_EXISTS",
@@ -161,7 +230,13 @@ export const postgresAuthRepository: AuthRepository = {
         );
       }
 
-      throw error;
+      throw authError.create(
+        "REGISTRATION_FAILED",
+        "auth.registrationFailed",
+        500,
+      );
+    } finally {
+      client.release();
     }
   },
 
@@ -214,6 +289,83 @@ export const postgresAuthRepository: AuthRepository = {
     const row = result.rows[0];
 
     return row ? mapUser(row) : null;
+  },
+
+  async getOrCreateCustomerForUser(userId: number): Promise<number | null> {
+    const client = await postgresPool.connect();
+
+    try {
+      await client.query("begin");
+
+      const userResult = await client.query<AuthUserRow>(
+        `
+          select
+            user_id,
+            role_name,
+            customer_id,
+            email,
+            password_hash,
+            full_name,
+            is_active,
+            created_at,
+            updated_at
+          from public.auth_users
+          where user_id = $1
+            and is_active = true
+          for update
+        `,
+        [userId],
+      );
+      const user = userResult.rows[0];
+
+      if (!user) {
+        await client.query("commit");
+        return null;
+      }
+
+      if (user.customer_id) {
+        await client.query("commit");
+        return user.customer_id;
+      }
+
+      if (user.role_name !== "user") {
+        await client.query("commit");
+        return null;
+      }
+
+      const customerId = await createCustomerForUser(client, {
+        email: user.email,
+        fullName: user.full_name,
+      });
+
+      await client.query(
+        `
+          update public.auth_users
+          set
+            customer_id = $1,
+            updated_at = now()
+          where user_id = $2
+        `,
+        [customerId, userId],
+      );
+      await client.query("commit");
+
+      return customerId;
+    } catch (error) {
+      await client.query("rollback");
+
+      if (authError.is(error)) {
+        throw error;
+      }
+
+      throw authError.create(
+        "CUSTOMER_CREATE_FAILED",
+        "auth.customerCreateFailed",
+        500,
+      );
+    } finally {
+      client.release();
+    }
   },
 
   async createSession(input: CreateAuthSessionInput): Promise<AuthSession> {

@@ -2,9 +2,11 @@ import type { BackendMessageKey } from "@/server/shared/i18n/backend-messages";
 
 // ===================== TYPES =====================
 export type AuthErrorCode =
+  | "CUSTOMER_CREATE_FAILED"
   | "EMAIL_ALREADY_EXISTS"
   | "INVALID_CREDENTIALS"
   | "INVALID_INPUT"
+  | "REGISTRATION_FAILED"
   | "SESSION_CONFLICT"
   | "SESSION_NOT_FOUND";
 

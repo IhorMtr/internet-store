@@ -173,6 +173,18 @@ export function createAuthService({ repository, passwordService, tokenService }:
     return currentSession;
   }
 
+  async function getOrCreateCustomerForUser(user: AuthUser): Promise<number | null> {
+    if (user.customerId) {
+      return user.customerId;
+    }
+
+    if (user.roleName !== 'user') {
+      return null;
+    }
+
+    return repository.getOrCreateCustomerForUser(user.userId);
+  }
+
   async function logout(refreshToken: string | null): Promise<void> {
     if (!refreshToken) {
       return;
@@ -205,6 +217,7 @@ export function createAuthService({ repository, passwordService, tokenService }:
   return {
     getCurrentAccessSession,
     getCurrentRefreshSession,
+    getOrCreateCustomerForUser,
     login,
     logout,
     refresh,

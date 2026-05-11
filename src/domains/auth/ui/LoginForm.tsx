@@ -11,16 +11,16 @@ import { getAuthFormErrorMessage } from "@/domains/auth/lib/auth-form-error";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 
-// ===================== CONSTANTS =====================
+// ========== Constants ==========
 const initialValues: LoginFormValues = {
   email: "",
   password: "",
 };
 
-// ===================== COMPONENT =====================
+// ========== Component ==========
 
 export function LoginForm() {
-  // ===================== HOOKS =====================
+  // ========== Hooks ==========
 
   const locale = useLocale();
   const router = useRouter();
@@ -29,7 +29,7 @@ export function LoginForm() {
   const validationT = useTranslations("auth.validation");
   const loginMutation = useLoginMutation();
 
-  // ===================== DERIVED VALUES =====================
+  // ========== Derived Data ==========
 
   const validationSchema = createLoginSchema({
     emailInvalid: validationT("emailInvalid"),
@@ -37,7 +37,7 @@ export function LoginForm() {
     passwordRequired: validationT("passwordRequired"),
   });
 
-  // ===================== RENDER =====================
+  // ========== Render ==========
 
   return (
     <>

@@ -2,7 +2,7 @@ import type { AxiosInstance } from "axios";
 import { apiError } from "@/shared/api/errors";
 import { apiLocale } from "@/shared/api/locale";
 
-// ===================== INTERCEPTORS =====================
+// ========== Interceptors ==========
 
 export const apiInterceptors = {
   attach(client: AxiosInstance): void {

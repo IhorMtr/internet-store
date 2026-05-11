@@ -3,7 +3,7 @@
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { cn } from "@/shared/lib/cn";
 
-// ===================== TYPES =====================
+// ========== Types ==========
 
 type PopoverProps = {
   align?: "start" | "center" | "end";
@@ -16,7 +16,7 @@ type PopoverProps = {
   trigger: React.ReactNode;
 };
 
-// ===================== COMPONENT =====================
+// ========== Component ==========
 
 export function Popover({
   align = "center",
@@ -28,7 +28,7 @@ export function Popover({
   side = "bottom",
   trigger,
 }: PopoverProps) {
-  // ===================== RENDER =====================
+  // ========== Render ==========
 
   return (
     <PopoverPrimitive.Root

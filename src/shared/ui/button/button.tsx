@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { cn } from "@/shared/lib/cn";
 
-// ===================== TYPES =====================
+// ========== Types ==========
 
 type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 type ButtonSize = "sm" | "md" | "lg";
@@ -11,7 +11,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: ButtonSize;
 };
 
-// ===================== CONSTANTS =====================
+// ========== Constants ==========
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary: "bg-accent text-accent-contrast shadow-soft hover:bg-accent-hover",
@@ -27,7 +27,7 @@ const sizeClasses: Record<ButtonSize, string> = {
   lg: "px-5 py-3 text-body",
 };
 
-// ===================== COMPONENT =====================
+// ========== Component ==========
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (

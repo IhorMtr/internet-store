@@ -1,32 +1,47 @@
-"use client";
+'use client';
 
-import { forwardRef, useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
-import { cn } from "@/shared/lib/cn";
+import { forwardRef, useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
+import { cn } from '@/shared/lib/cn';
+import { formatUkrainianPhone, type InputMask } from '@/shared/lib/ukrainian-phone';
 
-// ===================== TYPES =====================
+// ========== Types ==========
 
-type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  mask?: InputMask;
+  error?: boolean;
+  invalid?: boolean;
+};
 
-// ===================== CONSTANTS =====================
+// ========== Constants ==========
 
 const inputClasses =
-  "w-full rounded-md border bg-surface-raised px-3 py-2 text-body text-primary outline-none placeholder:text-muted focus-visible:shadow-focus disabled:cursor-not-allowed disabled:opacity-60 aria-invalid:border-danger";
+  'w-full rounded-md border bg-surface-raised px-3 py-2 text-body text-primary outline-none placeholder:text-muted focus-visible:shadow-focus disabled:cursor-not-allowed disabled:opacity-60';
+const inputInvalidClasses = '!border-danger focus-visible:!border-danger focus-visible:!shadow-focus-danger';
 
-// ===================== COMPONENT =====================
+// ========== Component ==========
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, disabled, type = "text", ...props }, ref) => {
-    // ===================== STATE =====================
+  ({ className, disabled, error, invalid, mask, onChange, type = 'text', ...props }, ref) => {
+    // ========== State ==========
 
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-    // ===================== DERIVED VALUES =====================
+    // ========== Derived Data ==========
 
-    const isPassword = type === "password";
-    const inputType = isPassword && isPasswordVisible ? "text" : type;
+    const isPassword = type === 'password';
+    const inputType = isPassword && isPasswordVisible ? 'text' : type;
+    const isInvalid = Boolean(error || invalid || props['aria-invalid'] === true || props['aria-invalid'] === 'true');
 
-    // ===================== RENDER =====================
+    const handleChange: React.ChangeEventHandler<HTMLInputElement> = event => {
+      if (mask === 'ukrainian-phone') {
+        event.currentTarget.value = formatUkrainianPhone(event.currentTarget.value);
+      }
+
+      onChange?.(event);
+    };
+
+    // ========== Render ==========
 
     if (!isPassword) {
       return (
@@ -34,7 +49,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           type={inputType}
           disabled={disabled}
-          className={cn(inputClasses, className)}
+          aria-invalid={isInvalid || undefined}
+          className={cn(inputClasses, className, isInvalid && inputInvalidClasses)}
+          onChange={handleChange}
           {...props}
         />
       );
@@ -46,14 +63,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           type={inputType}
           disabled={disabled}
-          className={cn(inputClasses, "pr-10", className)}
+          aria-invalid={isInvalid || undefined}
+          className={cn(inputClasses, 'pr-10', className, isInvalid && inputInvalidClasses)}
+          onChange={handleChange}
           {...props}
         />
         <button
           type="button"
-          aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+          aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
           className="ds-transition absolute right-2 top-1/2 inline-flex -translate-y-1/2 items-center justify-center rounded-sm p-1 text-muted hover:text-primary disabled:cursor-not-allowed disabled:opacity-60"
-          onClick={() => setIsPasswordVisible((value) => !value)}
+          onClick={() => setIsPasswordVisible(value => !value)}
           disabled={disabled}
         >
           {isPasswordVisible ? (
@@ -64,7 +83,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         </button>
       </div>
     );
-  },
+  }
 );
 
-Input.displayName = "Input";
+Input.displayName = 'Input';

@@ -5,22 +5,22 @@ import type { ThemeName } from './theme-constants';
 import { useTheme } from './theme-store';
 import { Button } from '@/shared/ui/button';
 
-// ===================== CONSTANTS =====================
+// ========== Constants ==========
 
 const themes: Array<{ labelKey: 'light' | 'dark'; value: ThemeName }> = [
   { labelKey: 'light', value: 'shopcore-light' },
   { labelKey: 'dark', value: 'shopcore-dark' },
 ];
 
-// ===================== COMPONENT =====================
+// ========== Component ==========
 
 export function ThemeToggle() {
-  // ===================== HOOKS =====================
+  // ========== Hooks ==========
 
   const t = useTranslations('themeSwitcher');
   const { setTheme, theme } = useTheme();
 
-  // ===================== RENDER =====================
+  // ========== Render ==========
 
   return (
     <div className="grid w-full grid-cols-2 rounded-md border bg-surface p-1 shadow-soft">

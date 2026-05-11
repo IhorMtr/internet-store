@@ -7,13 +7,13 @@ import {
   type ThemeName,
 } from "./theme-constants";
 
-// ===================== HELPERS =====================
+// ========== Helpers ==========
 
 function isThemeName(value: string | null | undefined): value is ThemeName {
   return value === "shopcore-light" || value === "shopcore-dark";
 }
 
-// ===================== STORE =====================
+// ========== Store ==========
 
 export const themeStorage = {
   get(): ThemeName {
@@ -35,27 +35,27 @@ export const themeStorage = {
   },
 };
 
-// ===================== HOOK =====================
+// ========== Hook ==========
 
 export function useTheme() {
-  // ===================== STATE =====================
+  // ========== State ==========
 
   const [theme, setThemeState] = useState<ThemeName>(() => themeStorage.get());
 
-  // ===================== EFFECTS =====================
+  // ========== Effects ==========
 
   useEffect(() => {
     themeStorage.apply(theme);
   }, [theme]);
 
-  // ===================== ACTIONS =====================
+  // ========== Actions ==========
 
   function setTheme(nextTheme: ThemeName) {
     themeStorage.set(nextTheme);
     setThemeState(nextTheme);
   }
 
-  // ===================== RETURN =====================
+  // ========== Return ==========
 
   return {
     setTheme,

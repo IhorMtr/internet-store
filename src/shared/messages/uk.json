@@ -59,6 +59,7 @@
   "header": {
     "brand": "ShopCore",
     "menu": "Меню",
+    "adminPanel": "Адмін-панель",
     "settings": "Налаштування",
     "language": "Мова",
     "theme": "Тема",
@@ -70,5 +71,408 @@
   "themeSwitcher": {
     "light": "Світла",
     "dark": "Темна"
+  },
+  "Admin": {
+    "loading": "Перевірка доступу до адмінки...",
+    "accessDenied": "Доступ до адмінки заборонено. Перенаправлення на головну...",
+    "redirecting": "Перевірка прав адміністратора...",
+    "navigationTitle": "Розділи адмінки",
+    "nav": {
+      "dashboard": "Дашборд",
+      "categories": "Категорії",
+      "products": "Товари",
+      "suppliers": "Постачальники",
+      "deliveries": "Поставки",
+      "orders": "Замовлення",
+      "reports": "Звіти"
+    },
+    "confirmDialog": {
+      "confirm": "Підтвердити",
+      "cancel": "Скасувати"
+    },
+    "statuses": {
+      "order": {
+        "CREATED": "Створено",
+        "PENDING": "Очікує",
+        "PROCESSING": "В обробці",
+        "IN_TRANSIT": "У дорозі",
+        "COMPLETED": "Завершено",
+        "PAID": "Оплачено",
+        "DELIVERED": "Доставлено",
+        "CANCELLED": "Скасовано",
+        "FAILED": "Неуспішно",
+        "RETURNED": "Повернено",
+        "UNKNOWN": "Невідомо"
+      },
+      "shipment": {
+        "CREATED": "Створено",
+        "PREPARING": "Готується",
+        "PROCESSING": "В обробці",
+        "IN_TRANSIT": "У дорозі",
+        "DELIVERED": "Доставлено",
+        "CANCELLED": "Скасовано",
+        "FAILED": "Неуспішно",
+        "RETURNED": "Повернено",
+        "UNKNOWN": "Невідомо"
+      },
+      "payment": {
+        "CREATED": "Створено",
+        "PENDING": "Очікує",
+        "PROCESSING": "В обробці",
+        "PAID": "Оплачено",
+        "CANCELLED": "Скасовано",
+        "FAILED": "Неуспішно",
+        "UNKNOWN": "Невідомо"
+      }
+    }
+  },
+  "AdminDashboard": {
+    "title": "Адмін-панель",
+    "subtitle": "Операційний огляд вашого магазину.",
+    "quickActionsTitle": "Швидкі дії",
+    "stats": {
+      "productsCount": "Товарів",
+      "categoriesCount": "Категорій",
+      "suppliersCount": "Постачальників",
+      "ordersCount": "Замовлень",
+      "lowStockProductsCount": "Товарів з низьким залишком",
+      "availableProductsCount": "Доступних товарів"
+    }
+  },
+  "AdminCategories": {
+    "title": "Категорії",
+    "subtitle": "Керуйте каталогом категорій та описами.",
+    "confirmDelete": "Видалити цю категорію?",
+    "deleteDialog": {
+      "title": "Видалення категорії",
+      "description": "Ви впевнені, що хочете видалити \"{name}\"? Цю дію не можна скасувати."
+    },
+    "actions": {
+      "edit": "Редагувати",
+      "delete": "Видалити"
+    },
+    "form": {
+      "createTitle": "Створити категорію",
+      "editTitle": "Редагувати категорію",
+      "nameLabel": "Назва",
+      "namePlaceholder": "Назва категорії",
+      "descriptionLabel": "Опис",
+      "descriptionPlaceholder": "Опис категорії",
+      "createButton": "Створити",
+      "updateButton": "Зберегти зміни",
+      "cancelButton": "Скасувати",
+      "submitting": "Збереження..."
+    },
+    "validation": {
+      "nameRequired": "Назва категорії обов'язкова",
+      "descriptionTooLong": "Опис не може бути довшим за 1000 символів"
+    },
+    "table": {
+      "id": "ID",
+      "name": "Назва",
+      "description": "Опис",
+      "actions": "Дії",
+      "loading": "Завантаження категорій...",
+      "empty": "Категорій не знайдено."
+    }
+  },
+  "AdminProducts": {
+    "title": "Товари",
+    "subtitle": "Керуйте каталогом товарів, залишками та цінами.",
+    "confirmDelete": "Видалити цей товар?",
+    "deleteDialog": {
+      "title": "Видалення товару",
+      "description": "Ви впевнені, що хочете видалити \"{name}\"? Цю дію не можна скасувати."
+    },
+    "actions": {
+      "edit": "Редагувати",
+      "delete": "Видалити"
+    },
+    "filters": {
+      "title": "Фільтри",
+      "searchLabel": "Пошук",
+      "searchPlaceholder": "Введіть назву товару",
+      "categoryLabel": "Категорія",
+      "allCategories": "Усі категорії"
+    },
+    "form": {
+      "createTitle": "Створити товар",
+      "editTitle": "Редагувати товар",
+      "nameLabel": "Назва",
+      "namePlaceholder": "Назва товару",
+      "categoryLabel": "Категорія",
+      "categoryPlaceholder": "Оберіть категорію",
+      "priceLabel": "Ціна",
+      "stockLabel": "Кількість на складі",
+      "discountLabel": "Знижка (%)",
+      "descriptionLabel": "Опис",
+      "descriptionPlaceholder": "Опис товару",
+      "createButton": "Створити",
+      "updateButton": "Зберегти зміни",
+      "cancelButton": "Скасувати",
+      "submitting": "Збереження..."
+    },
+    "validation": {
+      "categoryRequired": "Категорія обов'язкова",
+      "nameRequired": "Назва товару обов'язкова",
+      "priceRequired": "Ціна обов'язкова",
+      "priceInvalid": "Ціна має бути коректним невід'ємним числом",
+      "stockRequired": "Кількість на складі обов'язкова",
+      "stockInvalid": "Кількість на складі має бути невід'ємним цілим числом",
+      "discountRequired": "Знижка обов'язкова",
+      "discountInvalid": "Знижка має бути цілим числом",
+      "discountRange": "Знижка має бути в діапазоні від 0 до 100",
+      "descriptionTooLong": "Опис не може бути довшим за 2000 символів"
+    },
+    "table": {
+      "id": "ID",
+      "name": "Назва",
+      "categoryId": "ID категорії",
+      "price": "Ціна",
+      "stock": "Залишок",
+      "discount": "Знижка",
+      "actions": "Дії",
+      "loading": "Завантаження товарів...",
+      "empty": "Товарів не знайдено."
+    }
+  },
+  "AdminSuppliers": {
+    "title": "Постачальники",
+    "subtitle": "Керуйте довідником постачальників.",
+    "confirmDelete": "Видалити цього постачальника?",
+    "deleteDialog": {
+      "title": "Видалення постачальника",
+      "description": "Ви впевнені, що хочете видалити \"{name}\"? Цю дію не можна скасувати."
+    },
+    "actions": {
+      "edit": "Редагувати",
+      "delete": "Видалити"
+    },
+    "form": {
+      "createTitle": "Створити постачальника",
+      "editTitle": "Редагувати постачальника",
+      "nameLabel": "Назва",
+      "namePlaceholder": "Назва постачальника",
+      "phoneLabel": "Телефон",
+      "phonePlaceholder": "+380-67-123-45-67",
+      "emailLabel": "Email",
+      "emailPlaceholder": "supplier@example.com",
+      "createButton": "Створити",
+      "updateButton": "Зберегти зміни",
+      "cancelButton": "Скасувати",
+      "submitting": "Збереження..."
+    },
+    "validation": {
+      "nameRequired": "Назва постачальника обов'язкова",
+      "phoneInvalid": "Використовуйте формат українського номера: +380-67-123-45-67",
+      "emailInvalid": "Введіть коректний email",
+      "emailTooLong": "Email занадто довгий"
+    },
+    "table": {
+      "id": "ID",
+      "name": "Назва",
+      "phone": "Телефон",
+      "email": "Email",
+      "actions": "Дії",
+      "loading": "Завантаження постачальників...",
+      "empty": "Постачальників не знайдено."
+    }
+  },
+  "AdminDeliveries": {
+    "title": "Поставки",
+    "subtitle": "Реєструйте нові поставки та переглядайте деталі.",
+    "detailsTitle": "Поставка #{deliveryId}",
+    "actions": {
+      "details": "Деталі",
+      "closeDetails": "Закрити"
+    },
+    "form": {
+      "createTitle": "Створити поставку",
+      "supplierLabel": "Постачальник",
+      "supplierPlaceholder": "Оберіть постачальника",
+      "dateLabel": "Дата поставки",
+      "invoiceLabel": "Номер накладної",
+      "invoicePlaceholder": "INV-0001",
+      "itemsTitle": "Позиції поставки",
+      "addItemButton": "Додати позицію",
+      "removeItemButton": "Видалити",
+      "productLabel": "Товар",
+      "quantityLabel": "Кількість",
+      "supplyPriceLabel": "Ціна поставки",
+      "productPlaceholder": "Оберіть товар",
+      "productSearchPlaceholder": "Пошук товару",
+      "productSearchEmpty": "Товари не знайдено",
+      "quantityPlaceholder": "Кількість",
+      "pricePlaceholder": "Закупівельна ціна",
+      "createButton": "Створити поставку",
+      "submitting": "Створення...",
+      "resetButton": "Скинути"
+    },
+    "validation": {
+      "supplierRequired": "Постачальник обов'язковий",
+      "dateRequired": "Дата поставки обов'язкова",
+      "invoiceRequired": "Номер накладної обов'язковий",
+      "itemsRequired": "Потрібна щонайменше одна позиція",
+      "productRequired": "Товар обов'язковий",
+      "quantityRequired": "Кількість обов'язкова",
+      "quantityInvalid": "Кількість має бути додатним цілим числом",
+      "priceRequired": "Закупівельна ціна обов'язкова",
+      "priceInvalid": "Закупівельна ціна має бути коректним невід'ємним числом"
+    },
+    "table": {
+      "id": "ID",
+      "supplier": "Постачальник",
+      "date": "Дата",
+      "invoice": "Накладна",
+      "actions": "Дії",
+      "loading": "Завантаження поставок...",
+      "empty": "Поставок не знайдено."
+    },
+    "detailsMeta": {
+      "supplier": "Постачальник",
+      "date": "Дата",
+      "invoice": "Накладна"
+    },
+    "detailsTable": {
+      "productId": "ID товару",
+      "productName": "Товар",
+      "quantity": "Кількість",
+      "price": "Закупівельна ціна",
+      "loading": "Завантаження деталей поставки...",
+      "empty": "Деталі поставки відсутні."
+    }
+  },
+  "AdminOrders": {
+    "title": "Замовлення",
+    "subtitle": "Відстежуйте замовлення клієнтів та статус доставки.",
+    "actions": {
+      "open": "Відкрити"
+    },
+    "filters": {
+      "title": "Фільтри",
+      "statusLabel": "Статус замовлення",
+      "statusPlaceholder": "наприклад pending",
+      "allStatuses": "Усі статуси",
+      "statusOptions": {
+        "created": "Створено",
+        "processing": "Опрацювання",
+        "completed": "Завершено",
+        "cancelled": "Скасовано",
+        "pending": "Очікує"
+      },
+      "customerIdLabel": "ID клієнта",
+      "customerIdPlaceholder": "наприклад 101"
+    },
+    "table": {
+      "id": "ID",
+      "customer": "Клієнт",
+      "date": "Дата",
+      "status": "Статус замовлення",
+      "total": "Сума",
+      "paymentMethod": "Метод оплати",
+      "shippingStatus": "Статус доставки",
+      "actions": "Дії",
+      "loading": "Завантаження замовлень...",
+      "empty": "Замовлень не знайдено."
+    }
+  },
+  "AdminOrderDetails": {
+    "title": "Замовлення #{orderId}",
+    "subtitle": "Перегляньте деталі замовлення та керуйте виконанням.",
+    "meta": {
+      "customer": "Клієнт",
+      "customerId": "ID клієнта",
+      "date": "Дата замовлення",
+      "total": "Сума замовлення",
+      "orderStatus": "Статус замовлення",
+      "shippingStatus": "Статус доставки",
+      "paymentStatus": "Статус оплати",
+      "paymentDate": "Дата оплати"
+    },
+    "itemsTable": {
+      "productId": "ID товару",
+      "productName": "Товар",
+      "quantity": "Кількість",
+      "salePrice": "Ціна продажу",
+      "discount": "Знижка",
+      "lineAmount": "Сума рядка",
+      "loading": "Завантаження деталей замовлення...",
+      "empty": "Деталей замовлення не знайдено."
+    },
+    "shipmentForm": {
+      "title": "Доставка",
+      "serviceLabel": "Служба доставки",
+      "servicePlaceholder": "Нова пошта",
+      "trackingLabel": "Трек-номер",
+      "trackingPlaceholder": "NP123456789",
+      "addressLabel": "Адреса доставки",
+      "addressPlaceholder": "Місто, відділення, вулиця",
+      "statusLabel": "Статус доставки",
+      "statusPlaceholder": "processing",
+      "statusOptions": {
+        "created": "Створено",
+        "processing": "Опрацювання",
+        "inTransit": "У дорозі",
+        "delivered": "Доставлено",
+        "cancelled": "Скасовано"
+      },
+      "createButton": "Створити доставку",
+      "updateButton": "Оновити доставку",
+      "creating": "Створення...",
+      "updating": "Оновлення...",
+      "validation": {
+        "serviceRequired": "Служба доставки обов'язкова",
+        "trackingRequired": "Трек-номер обов'язковий",
+        "addressRequired": "Адреса доставки обов'язкова",
+        "statusRequired": "Статус доставки обов'язковий"
+      }
+    },
+    "paymentForm": {
+      "title": "Оплата",
+      "methodLabel": "Метод оплати",
+      "methodPlaceholder": "card",
+      "submitButton": "Зареєструвати оплату",
+      "submitting": "Реєстрація...",
+      "validation": {
+        "methodRequired": "Метод оплати обов'язковий"
+      }
+    }
+  },
+  "AdminReports": {
+    "title": "Звіти",
+    "subtitle": "Аналізуйте продажі та ефективність категорій.",
+    "soldProducts": {
+      "dateLabel": "Дата",
+      "applyButton": "Сформувати звіт",
+      "validation": {
+        "dateRequired": "Дата обов'язкова"
+      },
+      "table": {
+        "productId": "ID товару",
+        "productName": "Товар",
+        "totalQuantity": "Загальна кількість",
+        "totalAmount": "Загальна сума",
+        "loading": "Завантаження звіту по товарах...",
+        "empty": "За цю дату даних немає."
+      }
+    },
+    "topCategories": {
+      "dateFromLabel": "Дата від",
+      "dateToLabel": "Дата до",
+      "applyButton": "Сформувати звіт",
+      "validation": {
+        "dateFromRequired": "Початкова дата обов'язкова",
+        "dateToRequired": "Кінцева дата обов'язкова",
+        "dateRangeInvalid": "Кінцева дата має бути не раніше початкової"
+      },
+      "table": {
+        "categoryId": "ID категорії",
+        "categoryName": "Категорія",
+        "totalQuantity": "Загальна кількість",
+        "totalAmount": "Загальна сума",
+        "loading": "Завантаження звіту по категоріях...",
+        "empty": "За цей період даних немає."
+      }
+    }
   }
 }

@@ -9,6 +9,7 @@
   "header": {
     "brand": "ShopCore",
     "menu": "Menu",
+    "adminPanel": "Admin panel",
     "settings": "Settings",
     "language": "Language",
     "theme": "Theme",
@@ -69,6 +70,409 @@
     "errors": {
       "network": "Network error. Please check your connection.",
       "unexpected": "Unexpected error"
+    }
+  },
+  "Admin": {
+    "loading": "Checking admin access...",
+    "accessDenied": "Admin access denied. Redirecting to home...",
+    "redirecting": "Checking admin permissions...",
+    "navigationTitle": "Admin sections",
+    "nav": {
+      "dashboard": "Dashboard",
+      "categories": "Categories",
+      "products": "Products",
+      "suppliers": "Suppliers",
+      "deliveries": "Deliveries",
+      "orders": "Orders",
+      "reports": "Reports"
+    },
+    "confirmDialog": {
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    },
+    "statuses": {
+      "order": {
+        "CREATED": "Created",
+        "PENDING": "Pending",
+        "PROCESSING": "Processing",
+        "IN_TRANSIT": "In transit",
+        "COMPLETED": "Completed",
+        "PAID": "Paid",
+        "DELIVERED": "Delivered",
+        "CANCELLED": "Cancelled",
+        "FAILED": "Failed",
+        "RETURNED": "Returned",
+        "UNKNOWN": "Unknown"
+      },
+      "shipment": {
+        "CREATED": "Created",
+        "PREPARING": "Preparing",
+        "PROCESSING": "Processing",
+        "IN_TRANSIT": "In transit",
+        "DELIVERED": "Delivered",
+        "CANCELLED": "Cancelled",
+        "FAILED": "Failed",
+        "RETURNED": "Returned",
+        "UNKNOWN": "Unknown"
+      },
+      "payment": {
+        "CREATED": "Created",
+        "PENDING": "Pending",
+        "PROCESSING": "Processing",
+        "PAID": "Paid",
+        "CANCELLED": "Cancelled",
+        "FAILED": "Failed",
+        "UNKNOWN": "Unknown"
+      }
+    }
+  },
+  "AdminDashboard": {
+    "title": "Admin Dashboard",
+    "subtitle": "Operational overview of your store.",
+    "quickActionsTitle": "Quick actions",
+    "stats": {
+      "productsCount": "Products",
+      "categoriesCount": "Categories",
+      "suppliersCount": "Suppliers",
+      "ordersCount": "Orders",
+      "lowStockProductsCount": "Low stock products",
+      "availableProductsCount": "Available products"
+    }
+  },
+  "AdminCategories": {
+    "title": "Categories",
+    "subtitle": "Manage category catalog and descriptions.",
+    "confirmDelete": "Delete this category?",
+    "deleteDialog": {
+      "title": "Delete category",
+      "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone."
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "form": {
+      "createTitle": "Create category",
+      "editTitle": "Edit category",
+      "nameLabel": "Name",
+      "namePlaceholder": "Category name",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Category description",
+      "createButton": "Create",
+      "updateButton": "Save changes",
+      "cancelButton": "Cancel",
+      "submitting": "Saving..."
+    },
+    "validation": {
+      "nameRequired": "Category name is required",
+      "descriptionTooLong": "Description must not exceed 1000 characters"
+    },
+    "table": {
+      "id": "ID",
+      "name": "Name",
+      "description": "Description",
+      "actions": "Actions",
+      "loading": "Loading categories...",
+      "empty": "No categories found."
+    }
+  },
+  "AdminProducts": {
+    "title": "Products",
+    "subtitle": "Manage product catalog, stock and pricing.",
+    "confirmDelete": "Delete this product?",
+    "deleteDialog": {
+      "title": "Delete product",
+      "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone."
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "filters": {
+      "title": "Filters",
+      "searchLabel": "Search",
+      "searchPlaceholder": "Type product name",
+      "categoryLabel": "Category",
+      "allCategories": "All categories"
+    },
+    "form": {
+      "createTitle": "Create product",
+      "editTitle": "Edit product",
+      "nameLabel": "Name",
+      "namePlaceholder": "Product name",
+      "categoryLabel": "Category",
+      "categoryPlaceholder": "Choose category",
+      "priceLabel": "Price",
+      "stockLabel": "Stock quantity",
+      "discountLabel": "Discount (%)",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Product description",
+      "createButton": "Create",
+      "updateButton": "Save changes",
+      "cancelButton": "Cancel",
+      "submitting": "Saving..."
+    },
+    "validation": {
+      "categoryRequired": "Category is required",
+      "nameRequired": "Product name is required",
+      "priceRequired": "Price is required",
+      "priceInvalid": "Price must be a valid non-negative number",
+      "stockRequired": "Stock quantity is required",
+      "stockInvalid": "Stock quantity must be a non-negative integer",
+      "discountRequired": "Discount is required",
+      "discountInvalid": "Discount must be an integer",
+      "discountRange": "Discount must be between 0 and 100",
+      "descriptionTooLong": "Description must not exceed 2000 characters"
+    },
+    "table": {
+      "id": "ID",
+      "name": "Name",
+      "categoryId": "Category ID",
+      "price": "Price",
+      "stock": "Stock",
+      "discount": "Discount",
+      "actions": "Actions",
+      "loading": "Loading products...",
+      "empty": "No products found."
+    }
+  },
+  "AdminSuppliers": {
+    "title": "Suppliers",
+    "subtitle": "Manage supplier directory.",
+    "confirmDelete": "Delete this supplier?",
+    "deleteDialog": {
+      "title": "Delete supplier",
+      "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone."
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "form": {
+      "createTitle": "Create supplier",
+      "editTitle": "Edit supplier",
+      "nameLabel": "Name",
+      "namePlaceholder": "Supplier name",
+      "phoneLabel": "Phone",
+      "phonePlaceholder": "+380-67-123-45-67",
+      "emailLabel": "Email",
+      "emailPlaceholder": "supplier@example.com",
+      "createButton": "Create",
+      "updateButton": "Save changes",
+      "cancelButton": "Cancel",
+      "submitting": "Saving..."
+    },
+    "validation": {
+      "nameRequired": "Supplier name is required",
+      "phoneInvalid": "Use Ukrainian phone format: +380-67-123-45-67",
+      "emailInvalid": "Enter a valid email",
+      "emailTooLong": "Email is too long"
+    },
+    "table": {
+      "id": "ID",
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "actions": "Actions",
+      "loading": "Loading suppliers...",
+      "empty": "No suppliers found."
+    }
+  },
+  "AdminDeliveries": {
+    "title": "Deliveries",
+    "subtitle": "Register incoming deliveries and inspect details.",
+    "detailsTitle": "Delivery #{deliveryId}",
+    "actions": {
+      "details": "Details",
+      "closeDetails": "Close"
+    },
+    "form": {
+      "createTitle": "Create delivery",
+      "supplierLabel": "Supplier",
+      "supplierPlaceholder": "Choose supplier",
+      "dateLabel": "Delivery date",
+      "invoiceLabel": "Invoice number",
+      "invoicePlaceholder": "INV-0001",
+      "itemsTitle": "Delivery items",
+      "addItemButton": "Add item",
+      "removeItemButton": "Remove",
+      "productLabel": "Product",
+      "quantityLabel": "Quantity",
+      "supplyPriceLabel": "Supply price",
+      "productPlaceholder": "Choose product",
+      "productSearchPlaceholder": "Search product",
+      "productSearchEmpty": "No matching products",
+      "quantityPlaceholder": "Quantity",
+      "pricePlaceholder": "Supply price",
+      "createButton": "Create delivery",
+      "submitting": "Creating...",
+      "resetButton": "Reset"
+    },
+    "validation": {
+      "supplierRequired": "Supplier is required",
+      "dateRequired": "Delivery date is required",
+      "invoiceRequired": "Invoice number is required",
+      "itemsRequired": "At least one item is required",
+      "productRequired": "Product is required",
+      "quantityRequired": "Quantity is required",
+      "quantityInvalid": "Quantity must be a positive integer",
+      "priceRequired": "Supply price is required",
+      "priceInvalid": "Supply price must be a valid non-negative number"
+    },
+    "table": {
+      "id": "ID",
+      "supplier": "Supplier",
+      "date": "Date",
+      "invoice": "Invoice",
+      "actions": "Actions",
+      "loading": "Loading deliveries...",
+      "empty": "No deliveries found."
+    },
+    "detailsMeta": {
+      "supplier": "Supplier",
+      "date": "Date",
+      "invoice": "Invoice"
+    },
+    "detailsTable": {
+      "productId": "Product ID",
+      "productName": "Product",
+      "quantity": "Quantity",
+      "price": "Supply price",
+      "loading": "Loading delivery details...",
+      "empty": "No delivery details found."
+    }
+  },
+  "AdminOrders": {
+    "title": "Orders",
+    "subtitle": "Track customer orders and shipping progress.",
+    "actions": {
+      "open": "Open"
+    },
+    "filters": {
+      "title": "Filters",
+      "statusLabel": "Order status",
+      "statusPlaceholder": "e.g. pending",
+      "allStatuses": "All statuses",
+      "statusOptions": {
+        "created": "Created",
+        "processing": "Processing",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "pending": "Pending"
+      },
+      "customerIdLabel": "Customer ID",
+      "customerIdPlaceholder": "e.g. 101"
+    },
+    "table": {
+      "id": "ID",
+      "customer": "Customer",
+      "date": "Date",
+      "status": "Order status",
+      "total": "Total",
+      "paymentMethod": "Payment method",
+      "shippingStatus": "Shipping status",
+      "actions": "Actions",
+      "loading": "Loading orders...",
+      "empty": "No orders found."
+    }
+  },
+  "AdminOrderDetails": {
+    "title": "Order #{orderId}",
+    "subtitle": "Review order details and manage fulfillment.",
+    "meta": {
+      "customer": "Customer",
+      "customerId": "Customer ID",
+      "date": "Order date",
+      "total": "Order total",
+      "orderStatus": "Order status",
+      "shippingStatus": "Shipping status",
+      "paymentStatus": "Payment status",
+      "paymentDate": "Payment date"
+    },
+    "itemsTable": {
+      "productId": "Product ID",
+      "productName": "Product",
+      "quantity": "Quantity",
+      "salePrice": "Sale price",
+      "discount": "Discount",
+      "lineAmount": "Line amount",
+      "loading": "Loading order details...",
+      "empty": "No order details found."
+    },
+    "shipmentForm": {
+      "title": "Shipment",
+      "serviceLabel": "Shipping service",
+      "servicePlaceholder": "Nova Poshta",
+      "trackingLabel": "Tracking number",
+      "trackingPlaceholder": "NP123456789",
+      "addressLabel": "Shipping address",
+      "addressPlaceholder": "City, branch, street",
+      "statusLabel": "Shipping status",
+      "statusPlaceholder": "processing",
+      "statusOptions": {
+        "created": "Created",
+        "processing": "Processing",
+        "inTransit": "In transit",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled"
+      },
+      "createButton": "Create shipment",
+      "updateButton": "Update shipment",
+      "creating": "Creating...",
+      "updating": "Updating...",
+      "validation": {
+        "serviceRequired": "Shipping service is required",
+        "trackingRequired": "Tracking number is required",
+        "addressRequired": "Shipping address is required",
+        "statusRequired": "Shipping status is required"
+      }
+    },
+    "paymentForm": {
+      "title": "Payment",
+      "methodLabel": "Payment method",
+      "methodPlaceholder": "card",
+      "submitButton": "Register payment",
+      "submitting": "Registering...",
+      "validation": {
+        "methodRequired": "Payment method is required"
+      }
+    }
+  },
+  "AdminReports": {
+    "title": "Reports",
+    "subtitle": "Analyze sales and category performance.",
+    "soldProducts": {
+      "dateLabel": "Date",
+      "applyButton": "Run report",
+      "validation": {
+        "dateRequired": "Date is required"
+      },
+      "table": {
+        "productId": "Product ID",
+        "productName": "Product",
+        "totalQuantity": "Total quantity",
+        "totalAmount": "Total amount",
+        "loading": "Loading sold products report...",
+        "empty": "No sold products data for this date."
+      }
+    },
+    "topCategories": {
+      "dateFromLabel": "Date from",
+      "dateToLabel": "Date to",
+      "applyButton": "Run report",
+      "validation": {
+        "dateFromRequired": "Start date is required",
+        "dateToRequired": "End date is required",
+        "dateRangeInvalid": "End date must be the same as or later than start date"
+      },
+      "table": {
+        "categoryId": "Category ID",
+        "categoryName": "Category",
+        "totalQuantity": "Total quantity",
+        "totalAmount": "Total amount",
+        "loading": "Loading top categories report...",
+        "empty": "No top categories data for this period."
+      }
     }
   }
 }

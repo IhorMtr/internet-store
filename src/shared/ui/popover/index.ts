@@ -1,3 +1,3 @@
-// ===================== EXPORTS =====================
+// ========== Exports ==========
 
 export { Popover } from "./popover";

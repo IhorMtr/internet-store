@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import type { RegisterFormValues } from "@/domains/auth/model/types/register-form.types";
 
-// ===================== TYPES =====================
+// ========== Types ==========
 export type RegisterValidationMessages = {
   emailInvalid: string;
   emailRequired: string;
@@ -9,7 +9,7 @@ export type RegisterValidationMessages = {
   passwordRequired: string;
 };
 
-// ===================== EXPORTS =====================
+// ========== Exports ==========
 export function createRegisterSchema(
   messages: RegisterValidationMessages,
 ): yup.ObjectSchema<RegisterFormValues> {

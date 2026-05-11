@@ -1,23 +1,34 @@
-import { forwardRef } from "react";
-import { cn } from "@/shared/lib/cn";
+import { forwardRef } from 'react';
+import { cn } from '@/shared/lib/cn';
 
-// ===================== TYPES =====================
+// ========== Types ==========
 
 type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
-// ===================== COMPONENT =====================
+type TextareaWithErrorProps = TextareaProps & {
+  error?: boolean;
+  invalid?: boolean;
+};
 
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, ...props }, ref) => (
-    <textarea
-      ref={ref}
-      className={cn(
-        "min-h-24 w-full resize-y rounded-md border bg-surface-raised px-3 py-2 text-body text-primary outline-none placeholder:text-muted focus-visible:shadow-focus disabled:cursor-not-allowed disabled:opacity-60 aria-invalid:border-danger",
-        className,
-      )}
-      {...props}
-    />
-  ),
+// ========== Component ==========
+
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaWithErrorProps>(
+  ({ className, error, invalid, ...props }, ref) => {
+    const isInvalid = Boolean(error || invalid || props['aria-invalid'] === true || props['aria-invalid'] === 'true');
+
+    return (
+      <textarea
+        ref={ref}
+        aria-invalid={isInvalid || undefined}
+        className={cn(
+          'min-h-24 w-full resize-y rounded-md border bg-surface-raised px-3 py-2 text-body text-primary outline-none placeholder:text-muted focus-visible:shadow-focus disabled:cursor-not-allowed disabled:opacity-60',
+          className,
+          isInvalid && 'border-danger! focus-visible:border-danger! focus-visible:shadow-focus-danger!'
+        )}
+        {...props}
+      />
+    );
+  }
 );
 
-Textarea.displayName = "Textarea";
+Textarea.displayName = 'Textarea';

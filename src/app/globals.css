@@ -1,4 +1,5 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@custom-variant dark (&:where(html[data-theme='shopcore-dark'], html[data-theme='shopcore-dark'] *));
 
 /* ===================== DESIGN TOKENS ===================== */
 
@@ -17,6 +18,26 @@
   --ds-color-accent-contrast: #f8f5ec;
   --ds-color-focus: #8a9a65;
   --ds-color-danger: #9a5a4d;
+
+  --ds-status-neutral-bg: #d8d4c8;
+  --ds-status-neutral-border: #b4ad9c;
+  --ds-status-neutral-text: #3d4035;
+
+  --ds-status-success-bg: #b9d4bd;
+  --ds-status-success-border: #7da27f;
+  --ds-status-success-text: #294f32;
+
+  --ds-status-warning-bg: #ead0a2;
+  --ds-status-warning-border: #c28a3c;
+  --ds-status-warning-text: #654013;
+
+  --ds-status-danger-bg: #e3b1ad;
+  --ds-status-danger-border: #bd6d65;
+  --ds-status-danger-text: #68332e;
+
+  --ds-status-info-bg: #c4d6dd;
+  --ds-status-info-border: #82a8b4;
+  --ds-status-info-text: #2d4e5b;
 
   --ds-font-size-caption: 0.75rem;
   --ds-font-size-body: 0.9375rem;
@@ -41,6 +62,10 @@
   --ds-shadow-soft: 0 1px 2px rgb(58 61 47 / 0.06), 0 10px 30px rgb(58 61 47 / 0.08);
   --ds-shadow-lifted: 0 14px 42px rgb(58 61 47 / 0.14);
   --ds-shadow-focus: 0 0 0 3px rgb(138 154 101 / 0.28);
+  --ds-shadow-focus-danger: 0 0 0 3px rgb(154 90 77 / 0.26);
+
+  --ds-color-scrollbar-thumb: #bcb4a4;
+  --ds-color-scrollbar-thumb-hover: #a79f8f;
 
   --ds-z-base: 0;
   --ds-z-header: 20;
@@ -98,6 +123,7 @@
   --shadow-soft: var(--ds-shadow-soft);
   --shadow-lifted: var(--ds-shadow-lifted);
   --shadow-focus: var(--ds-shadow-focus);
+  --shadow-focus-danger: var(--ds-shadow-focus-danger);
 
   --z-index-base: var(--ds-z-base);
   --z-index-header: var(--ds-z-header);
@@ -106,7 +132,7 @@
 
 /* ===================== DARK THEME ===================== */
 
-html[data-theme="shopcore-dark"] {
+html[data-theme='shopcore-dark'] {
   color-scheme: dark;
 
   --ds-color-canvas: #20231d;
@@ -122,9 +148,33 @@ html[data-theme="shopcore-dark"] {
   --ds-color-focus: #b4bf82;
   --ds-color-danger: #d19a8d;
 
+  --ds-status-neutral-bg: #3b4036;
+  --ds-status-neutral-border: #68705d;
+  --ds-status-neutral-text: #e3dfd4;
+
+  --ds-status-success-bg: #2f4734;
+  --ds-status-success-border: #6f966b;
+  --ds-status-success-text: #d7ecd3;
+
+  --ds-status-warning-bg: #4f3f25;
+  --ds-status-warning-border: #a37a39;
+  --ds-status-warning-text: #f0d5a1;
+
+  --ds-status-danger-bg: #523532;
+  --ds-status-danger-border: #a96f66;
+  --ds-status-danger-text: #f0c8c2;
+
+  --ds-status-info-bg: #2e444d;
+  --ds-status-info-border: #6f98a6;
+  --ds-status-info-text: #d1e7ee;
+
   --ds-shadow-soft: 0 1px 2px rgb(12 14 11 / 0.18), 0 12px 32px rgb(12 14 11 / 0.24);
   --ds-shadow-lifted: 0 18px 48px rgb(12 14 11 / 0.34);
   --ds-shadow-focus: 0 0 0 3px rgb(180 191 130 / 0.28);
+  --ds-shadow-focus-danger: 0 0 0 3px rgb(209 154 141 / 0.3);
+
+  --ds-color-scrollbar-thumb: #696d62;
+  --ds-color-scrollbar-thumb-hover: #7c8174;
 }
 
 /* ===================== BASE ===================== */
@@ -141,6 +191,28 @@ body {
 
 * {
   border-color: var(--ds-color-border);
+  scrollbar-width: thin;
+  scrollbar-color: var(--ds-color-scrollbar-thumb) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-color: var(--ds-color-scrollbar-thumb);
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--ds-color-scrollbar-thumb-hover);
 }
 
 ::selection {

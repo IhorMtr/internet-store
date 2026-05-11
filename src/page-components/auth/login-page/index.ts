@@ -1,3 +1,3 @@
-// ===================== EXPORTS =====================
+// ========== Exports ==========
 
 export { LoginPage } from "./LoginPage";

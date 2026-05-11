@@ -1,14 +1,14 @@
 import { routing, type Locale } from "@/i18n/routing";
 
-// ===================== CONSTANTS =====================
+// ========== Constants ==========
 const FALLBACK_LOCALE: Locale = routing.defaultLocale;
 
-// ===================== HELPERS =====================
+// ========== Helpers ==========
 function isLocale(value: string | undefined): value is Locale {
   return routing.locales.includes(value as Locale);
 }
 
-// ===================== EXPORTS =====================
+// ========== Exports ==========
 export const apiLocale = {
   getCurrent(): Locale {
     if (typeof window === "undefined") {

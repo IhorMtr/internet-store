@@ -3,10 +3,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { authApi } from "@/domains/auth/api/auth.api";
 
-// ===================== HOOK =====================
+// ========== Hook ==========
 
 export function useLogoutMutation() {
-  // ===================== MUTATIONS =====================
+  // ========== Mutations ==========
 
   return useMutation({
     mutationFn: authApi.logout,

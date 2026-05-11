@@ -1,7 +1,7 @@
 import axios, { type AxiosError } from "axios";
 import type { BaseResponse } from "@/shared/api/types";
 
-// ===================== TYPES =====================
+// ========== Types ==========
 export type AppErrorCode =
   | "BACKEND_ERROR"
   | "NETWORK_ERROR"
@@ -15,7 +15,7 @@ export type AppError = Error & {
   status: number | null;
 };
 
-// ===================== CONSTANTS =====================
+// ========== Constants ==========
 const fallbackStatusMessages: Record<number, string> = {
   400: "Bad request",
   401: "Unauthorized",
@@ -26,7 +26,7 @@ const fallbackStatusMessages: Record<number, string> = {
   500: "Internal server error",
 };
 
-// ===================== HELPERS =====================
+// ========== Helpers ==========
 function isBaseResponse(value: unknown): value is BaseResponse<unknown> {
   return (
     value !== null &&
@@ -45,7 +45,7 @@ function getStatusFallbackMessage(status: number | null): string {
   return fallbackStatusMessages[status] ?? `Request failed with status ${status}`;
 }
 
-// ===================== EXPORTS =====================
+// ========== Exports ==========
 export const apiError = {
   create({
     code,

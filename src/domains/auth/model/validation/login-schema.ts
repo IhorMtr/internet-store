@@ -1,14 +1,14 @@
 import * as yup from "yup";
 import type { LoginFormValues } from "@/domains/auth/model/types/login-form.types";
 
-// ===================== TYPES =====================
+// ========== Types ==========
 export type LoginValidationMessages = {
   emailInvalid: string;
   emailRequired: string;
   passwordRequired: string;
 };
 
-// ===================== EXPORTS =====================
+// ========== Exports ==========
 export function createLoginSchema(
   messages: LoginValidationMessages,
 ): yup.ObjectSchema<LoginFormValues> {

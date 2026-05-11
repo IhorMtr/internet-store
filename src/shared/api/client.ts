@@ -1,7 +1,7 @@
 import axios from "axios";
 import { apiInterceptors } from "@/shared/api/interceptors";
 
-// ===================== API CLIENT =====================
+// ========== API CLIENT ==========
 
 export const apiClient = axios.create({
   baseURL: "/api",
@@ -12,6 +12,6 @@ export const apiClient = axios.create({
   withCredentials: true,
 });
 
-// ===================== INTERCEPTORS =====================
+// ========== Interceptors ==========
 
 apiInterceptors.attach(apiClient);

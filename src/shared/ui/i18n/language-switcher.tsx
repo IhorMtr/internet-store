@@ -7,26 +7,26 @@ import { routing, type Locale } from '@/i18n/routing';
 import { cn } from '@/shared/lib/cn';
 import { Link, usePathname } from '@/i18n/navigation';
 
-// ===================== CONSTANTS =====================
+// ========== Constants ==========
 const localeLabels: Record<Locale, 'ukrainian' | 'english'> = {
   uk: 'ukrainian',
   en: 'english',
 };
 
-// ===================== COMPONENT =====================
+// ========== Component ==========
 export function LanguageSwitcher() {
-  // ===================== HOOKS =====================
+  // ========== Hooks ==========
 
   const t = useTranslations('common.texts');
   const locale = useLocale() as Locale;
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // ===================== QUERY PARAMS =====================
+  // ========== Query Params ==========
 
   const query = Object.fromEntries(searchParams.entries());
 
-  // ===================== RENDER =====================
+  // ========== Render ==========
 
   return (
     <div aria-label={t('language')} className="grid w-full grid-cols-2 rounded-md border bg-surface p-1 shadow-soft">

@@ -1,6 +1,6 @@
 import type { AxiosInstance } from "axios";
 
-// ===================== HELPERS =====================
+// ========== Helpers ==========
 
 export const apiAuthHeader = {
   setAccessToken(client: AxiosInstance, token: string): void {

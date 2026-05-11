@@ -4,15 +4,15 @@ import { useTranslations } from "next-intl";
 import { AuthPreferences } from "@/domains/auth/ui/auth-preferences";
 import { LoginForm } from "@/domains/auth/ui/LoginForm";
 
-// ===================== COMPONENT =====================
+// ========== Component ==========
 
 export function LoginPage() {
-  // ===================== HOOKS =====================
+  // ========== Hooks ==========
 
   const headerT = useTranslations("header");
   const t = useTranslations("auth.login");
 
-  // ===================== RENDER =====================
+  // ========== Render ==========
 
   return (
     <div className="flex min-h-full items-center justify-center bg-canvas px-4 py-10 text-primary">

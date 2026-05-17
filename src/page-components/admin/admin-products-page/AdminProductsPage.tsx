@@ -14,14 +14,21 @@ export function AdminProductsPage() {
     columns,
     commonT,
     confirmDelete,
+    currentImageUrl,
     deleteTarget,
     formInitialValues,
     formMode,
+    imagePreviewUrl,
+    isImageRemoving,
     isDeleteDialogOpen,
     isDeleteSubmitting,
     isFormSubmitting,
     isTableLoading,
+    removeProductImage,
     products,
+    selectedImageFile,
+    selectedImageError,
+    selectImage,
     search,
     selectedCategoryId,
     setSearch,
@@ -65,10 +72,17 @@ export function AdminProductsPage() {
 
         <AdminProductForm
           categoryOptions={categoryOptions}
+          currentImageUrl={currentImageUrl}
+          imageErrorMessage={selectedImageError}
+          imageFile={selectedImageFile}
+          imagePreviewUrl={imagePreviewUrl}
+          isImageRemoving={isImageRemoving}
           initialValues={formInitialValues}
           isSubmitting={isFormSubmitting}
           mode={formMode}
           onCancel={cancelEditing}
+          onImageSelected={selectImage}
+          onRemoveImage={removeProductImage}
           onSubmit={submitProduct}
         />
       </section>

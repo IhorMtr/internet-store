@@ -10,7 +10,15 @@ import {
   useUpdateShipmentMutation,
 } from '@/domains/admin/model/hooks';
 import type { AdminOrderDetailsRow, PaymentInput, ShipmentInput } from '@/domains/admin/model/types';
-import { formatCurrency, formatDate, formatDateTime, toNumber, toStatusTone } from '@/domains/admin/lib/admin-utils';
+import {
+  formatCurrency,
+  formatDate,
+  formatDateTime,
+  getEffectiveAdminShippingStatus,
+  toNumber,
+  toStatusTone,
+} from '@/domains/admin/lib/admin-utils';
+import { createPaymentMethodLabels, getPaymentMethodLabel, type PaymentMethod } from '@/shared/lib/payment-method';
 
 // ========== Types ==========
 
@@ -22,7 +30,7 @@ type ShipmentFormValues = {
 };
 
 type PaymentFormValues = {
-  paymentMethod: string;
+  paymentMethod: PaymentMethod;
 };
 
 // ========== Hook ==========
@@ -32,6 +40,7 @@ export function useAdminOrderDetailsPage(orderId: number) {
 
   const locale = useLocale();
   const t = useTranslations('AdminOrderDetails');
+  const paymentMethodT = useTranslations('PaymentMethods');
 
   // ========== State ==========
 
@@ -47,10 +56,15 @@ export function useAdminOrderDetailsPage(orderId: number) {
   const updateShipmentMutation = useUpdateShipmentMutation(orderId);
   const paymentMutation = useRegisterPaymentMutation(orderId);
 
-  // ========== Derived Data ==========
+  // ========== Derived Values ==========
 
   const detailsRows = detailsQuery.data?.data.details ?? [];
   const head = detailsRows[0];
+  const paymentMethodLabels = createPaymentMethodLabels(key => paymentMethodT(key));
+  const effectiveShippingStatus = getEffectiveAdminShippingStatus(
+    head?.order_status ?? null,
+    head?.shipping_status ?? null
+  );
 
   const shipmentInitialValues: ShipmentFormValues = {
     shippingService: head?.shipping_service ?? '',
@@ -60,7 +74,7 @@ export function useAdminOrderDetailsPage(orderId: number) {
   };
 
   const paymentInitialValues: PaymentFormValues = {
-    paymentMethod: '',
+    paymentMethod: 'card',
   };
 
   // ========== Table Columns ==========
@@ -124,18 +138,23 @@ export function useAdminOrderDetailsPage(orderId: number) {
 
   async function submitPayment(values: PaymentFormValues) {
     const payload: PaymentInput = {
-      paymentMethod: values.paymentMethod.trim(),
+      paymentMethod: values.paymentMethod,
     };
 
     await paymentMutation.mutateAsync(payload);
   }
 
-  // ========== Return ==========
+  function formatPaymentMethod(value: string | null | undefined) {
+    return getPaymentMethodLabel(value, paymentMethodLabels);
+  }
+
+  // ========== Return Values ==========
 
   return {
     t,
     locale,
     head,
+    effectiveShippingStatus,
     detailsRows,
     itemColumns,
     isDetailsLoading: detailsQuery.isLoading,
@@ -150,6 +169,7 @@ export function useAdminOrderDetailsPage(orderId: number) {
     formatCurrency,
     formatDate,
     formatDateTime,
+    formatPaymentMethod,
     toStatusTone,
   };
 }

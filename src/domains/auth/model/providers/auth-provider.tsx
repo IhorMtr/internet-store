@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useMutation } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, type ReactNode } from "react";
-import { authApi } from "@/domains/auth/api/auth.api";
-import { useAuthSessionStore } from "@/domains/auth/model/stores/auth-session-store";
-import { apiAuthHeader } from "@/shared/api/auth-header";
-import { apiClient } from "@/shared/api/client";
+import { useMutation } from '@tanstack/react-query';
+import { useLocale, useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useEffect, useRef, type ReactNode } from 'react';
+import { authApi } from '@/domains/auth/api/auth.api';
+import { useAuthSessionStore } from '@/domains/auth/model/stores/auth-session-store';
+import { apiAuthHeader } from '@/shared/api/auth-header';
+import { apiClient } from '@/shared/api/client';
 
 // ===================== TYPES =====================
 type AuthProviderProps = {
@@ -28,18 +28,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // ===================== HOOKS =====================
 
   const locale = useLocale();
+  const t = useTranslations('StorefrontAccess');
   const router = useRouter();
 
   // ===================== STORE =====================
 
-  const status = useAuthSessionStore((state) => state.status);
-  const setAuthenticated = useAuthSessionStore(
-    (state) => state.setAuthenticated,
-  );
-  const setChecking = useAuthSessionStore((state) => state.setChecking);
-  const setUnauthenticated = useAuthSessionStore(
-    (state) => state.setUnauthenticated,
-  );
+  const status = useAuthSessionStore(state => state.status);
+  const setAuthenticated = useAuthSessionStore(state => state.setAuthenticated);
+  const setChecking = useAuthSessionStore(state => state.setChecking);
+  const setUnauthenticated = useAuthSessionStore(state => state.setUnauthenticated);
 
   // ===================== STATE =====================
 
@@ -66,7 +63,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // ===================== EFFECTS =====================
 
   useEffect(() => {
-    if (status !== "checking") {
+    if (status !== 'checking') {
       return;
     }
 
@@ -80,7 +77,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [refresh, setChecking, status]);
 
   useEffect(() => {
-    if (status !== "authenticated") {
+    if (status !== 'authenticated') {
       return;
     }
 
@@ -93,17 +90,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // ===================== RENDER =====================
 
-  if (status === "checking") {
+  if (status === 'checking') {
     return (
       <div className="flex min-h-full items-center justify-center bg-canvas px-4 text-primary">
-        <div className="rounded-md border bg-surface px-4 py-3 text-body text-muted shadow-soft">
-          Checking session...
-        </div>
+        <div className="rounded-md border bg-surface px-4 py-3 text-body text-muted shadow-soft">{t('loading')}</div>
       </div>
     );
   }
 
-  if (status === "unauthenticated") {
+  if (status === 'unauthenticated') {
     return null;
   }
 

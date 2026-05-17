@@ -54,7 +54,7 @@ export function useAdminDeliveriesPage() {
 
   const createMutation = useCreateDeliveryMutation();
 
-  // ========== Derived Data ==========
+  // ========== Derived Values ==========
 
   const deliveries = deliveriesQuery.data?.data.deliveries ?? [];
   const suppliers = suppliersQuery.data?.data.suppliers ?? [];
@@ -155,7 +155,7 @@ export function useAdminDeliveriesPage() {
     await createMutation.mutateAsync(payload);
   }
 
-  // ========== Return ==========
+  // ========== Return Values ==========
 
   return {
     t,

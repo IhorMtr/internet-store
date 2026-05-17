@@ -15,6 +15,7 @@ type SoldProductsReportFormValues = {
 
 type AdminSoldProductsReportFormProps = {
   initialValues: SoldProductsReportFormValues;
+  isSubmitting: boolean;
   onSubmit: (values: SoldProductsReportFormValues) => Promise<void>;
 };
 
@@ -26,7 +27,7 @@ function isFieldInvalid(error: unknown, isTouched: unknown, submitCount: number)
 
 // ========== Component ==========
 
-export function AdminSoldProductsReportForm({ initialValues, onSubmit }: AdminSoldProductsReportFormProps) {
+export function AdminSoldProductsReportForm({ initialValues, isSubmitting, onSubmit }: AdminSoldProductsReportFormProps) {
   // ========== Translations ==========
 
   const t = useTranslations('AdminReports');
@@ -52,8 +53,13 @@ export function AdminSoldProductsReportForm({ initialValues, onSubmit }: AdminSo
         const dateInvalid = isFieldInvalid(errors.date, touched.date, submitCount);
 
         return (
-          <Form className="flex flex-wrap items-end justify-between gap-3">
-            <FormField label={t('soldProducts.dateLabel')} required error={dateInvalid}>
+          <Form className="flex flex-wrap items-end gap-3">
+            <FormField
+              className="w-full sm:w-64"
+              label={t('soldProducts.dateLabel')}
+              required
+              error={dateInvalid}
+            >
               <DatePicker
                 value={values.date}
                 onChange={value => {
@@ -65,7 +71,9 @@ export function AdminSoldProductsReportForm({ initialValues, onSubmit }: AdminSo
               />
             </FormField>
 
-            <Button type="submit">{t('soldProducts.applyButton')}</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? t('soldProducts.generating') : t('soldProducts.applyButton')}
+            </Button>
           </Form>
         );
       }}

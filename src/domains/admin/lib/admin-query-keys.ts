@@ -1,7 +1,7 @@
 import type { OrdersFilters, ProductsFilters } from '@/domains/admin/model/types/admin.types';
 
 // ========== Helpers ==========
-function normalizeProductsFilters(filters: ProductsFilters) {
+function buildProductsFiltersKey(filters: ProductsFilters) {
   return {
     search: filters.search ?? null,
     categoryId: filters.categoryId ?? null,
@@ -22,7 +22,7 @@ export const adminQueryKeys = {
   categories: ['admin', 'categories'] as const,
   category: (categoryId: number) => ['admin', 'categories', categoryId] as const,
 
-  products: (filters: ProductsFilters = {}) => ['admin', 'products', normalizeProductsFilters(filters)] as const,
+  products: (filters: ProductsFilters = {}) => ['admin', 'products', buildProductsFiltersKey(filters)] as const,
   product: (productId: number) => ['admin', 'products', productId] as const,
 
   suppliers: ['admin', 'suppliers'] as const,

@@ -1,16 +1,22 @@
-"use client";
+'use client';
 
-import { useTranslations } from "next-intl";
-import { AuthPreferences } from "@/domains/auth/ui/auth-preferences";
-import { LoginForm } from "@/domains/auth/ui/LoginForm";
+import { useTranslations } from 'next-intl';
+import { AuthPreferences } from '@/domains/auth/ui/auth-preferences';
+import { LoginForm } from '@/domains/auth/ui/LoginForm';
+
+// ========== Types ==========
+
+type LoginPageProps = {
+  redirectPath?: string;
+};
 
 // ========== Component ==========
 
-export function LoginPage() {
+export function LoginPage({ redirectPath }: LoginPageProps) {
   // ========== Hooks ==========
 
-  const headerT = useTranslations("header");
-  const t = useTranslations("auth.login");
+  const headerT = useTranslations('header');
+  const t = useTranslations('auth.login');
 
   // ========== Render ==========
 
@@ -20,13 +26,11 @@ export function LoginPage() {
 
       <section className="w-full max-w-md rounded-lg border bg-surface p-5 shadow-soft">
         <div>
-          <p className="text-caption font-semibold uppercase text-muted">
-            {headerT("brand")}
-          </p>
-          <h1 className="mt-1 text-heading font-semibold">{t("title")}</h1>
+          <p className="text-caption font-semibold uppercase text-muted">{headerT('brand')}</p>
+          <h1 className="mt-1 text-heading font-semibold">{t('title')}</h1>
         </div>
 
-        <LoginForm />
+        <LoginForm redirectPath={redirectPath} />
       </section>
     </div>
   );

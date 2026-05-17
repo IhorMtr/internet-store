@@ -1,4 +1,5 @@
 import type { BaseResponse } from '@/shared/api/types';
+import type { PaymentMethod } from '@/shared/lib/payment-method';
 
 // ========== Types ==========
 export type AdminSummary = {
@@ -24,6 +25,8 @@ export type AdminProduct = {
   stockQuantity: number;
   discount: number;
   description: string | null;
+  imageUrl: string | null;
+  imagePublicId: string | null;
 };
 
 export type AdminSupplier = {
@@ -147,7 +150,7 @@ export type ShipmentInput = {
 };
 
 export type PaymentInput = {
-  paymentMethod: string;
+  paymentMethod: PaymentMethod;
 };
 
 export type ProductsFilters = {

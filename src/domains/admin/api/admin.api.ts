@@ -129,6 +129,21 @@ export const adminApi = {
     return response.data;
   },
 
+  async uploadProductImage(productId: number, file: File): Promise<ProductResponse> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await apiClient.post<ProductResponse>(`/admin/products/${productId}/image`, formData);
+
+    return response.data;
+  },
+
+  async deleteProductImage(productId: number): Promise<ProductResponse> {
+    const response = await apiClient.delete<ProductResponse>(`/admin/products/${productId}/image`);
+
+    return response.data;
+  },
+
   async getSuppliers(): Promise<SuppliersResponse> {
     const response = await apiClient.get<SuppliersResponse>('/admin/suppliers');
 

@@ -1,9 +1,10 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { useLogoutMutation } from '@/domains/auth/model/hooks/use-logout-mutation';
 import { useAuthSessionStore } from '@/domains/auth/model/stores/auth-session-store';
+import { cartSelectors, useCartStore } from '@/domains/store/model/stores/cart-store';
 import { HeaderActionsMenu } from '@/shared/ui/header/header-actions-menu';
 
 // ========== Component ==========
@@ -11,12 +12,12 @@ import { HeaderActionsMenu } from '@/shared/ui/header/header-actions-menu';
 export function Header() {
   // ========== Hooks ==========
 
-  const locale = useLocale();
   const router = useRouter();
   const t = useTranslations('header');
   const logoutMutation = useLogoutMutation();
   const userRoleName = useAuthSessionStore(state => state.user?.roleName);
   const setUnauthenticated = useAuthSessionStore(state => state.setUnauthenticated);
+  const cartItemsCount = useCartStore(cartSelectors.itemsCount);
 
   // ========== HANDLERS ==========
 
@@ -24,7 +25,7 @@ export function Header() {
     logoutMutation.mutate(undefined, {
       onSettled() {
         setUnauthenticated();
-        router.replace(`/${locale}/auth/login`);
+        router.replace('/auth/login');
       },
     });
   }
@@ -37,7 +38,8 @@ export function Header() {
         <p className="text-title font-semibold">{t('brand')}</p>
 
         <HeaderActionsMenu
-          canAccessAdminPanel={userRoleName === 'admin'}
+          roleName={userRoleName}
+          cartItemsCount={cartItemsCount}
           onSignOut={handleLogout}
           isSigningOut={logoutMutation.isPending}
         />

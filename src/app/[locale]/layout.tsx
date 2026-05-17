@@ -1,14 +1,17 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { notFound } from 'next/navigation';
+import Script from 'next/script';
 import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { routing, type Locale } from '@/i18n/routing';
 import { ApiQueryProvider } from '@/shared/providers/api-query-provider';
 import { ToastProvider } from '@/shared/providers/toast-provider';
+import { getThemeInitScript } from '@/shared/ui/theme/theme-init-script';
+import { ThemeInitializer } from '@/shared/ui/theme/theme-initializer';
 import '../globals.css';
 
-// ===================== CONSTANTS =====================
+// ========== Constants ==========
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -34,19 +37,19 @@ export const metadata: Metadata = {
   manifest: '/site.webmanifest',
 };
 
-// ===================== ROUTING =====================
+// ========== Routing ==========
 
 export function generateStaticParams() {
   return routing.locales.map(locale => ({ locale }));
 }
 
-// ===================== HELPERS =====================
+// ========== Helpers ==========
 
 function isLocale(value: string): value is Locale {
   return routing.locales.includes(value as Locale);
 }
 
-// ===================== COMPONENT =====================
+// ========== Component ==========
 
 export default async function LocaleLayout({
   children,
@@ -55,7 +58,7 @@ export default async function LocaleLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }>) {
-  // ===================== DERIVED VALUES =====================
+  // ========== Derived Values ==========
 
   const { locale } = await params;
 
@@ -65,7 +68,7 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
 
-  // ===================== RENDER =====================
+  // ========== Render ==========
 
   return (
     <html
@@ -75,7 +78,13 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">
+        <Script
+          id="shopcore-theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: getThemeInitScript() }}
+        />
         <NextIntlClientProvider>
+          <ThemeInitializer />
           <ApiQueryProvider>
             <main className="flex flex-1 flex-col">{children}</main>
           </ApiQueryProvider>

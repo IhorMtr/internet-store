@@ -1,40 +1,49 @@
-"use client";
+'use client';
 
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
-import { useLoginMutation } from "@/domains/auth/model/hooks/use-login-mutation";
-import type { LoginFormValues } from "@/domains/auth/model/types/login-form.types";
-import { createLoginSchema } from "@/domains/auth/model/validation/login-schema";
-import { getAuthFormErrorMessage } from "@/domains/auth/lib/auth-form-error";
-import { Button } from "@/shared/ui/button";
-import { Input } from "@/shared/ui/input";
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { useTranslations } from 'next-intl';
+import { Link, useRouter } from '@/i18n/navigation';
+import { useLoginMutation } from '@/domains/auth/model/hooks/use-login-mutation';
+import type { LoginFormValues } from '@/domains/auth/model/types/login-form.types';
+import type { AuthUser } from '@/domains/auth/model/types/auth.types';
+import { createLoginSchema } from '@/domains/auth/model/validation/login-schema';
+import { getAuthFormErrorMessage } from '@/domains/auth/lib/auth-form-error';
+import { Button } from '@/shared/ui/button';
+import { Input } from '@/shared/ui/input';
 
 // ========== Constants ==========
 const initialValues: LoginFormValues = {
-  email: "",
-  password: "",
+  email: '',
+  password: '',
 };
+
+// ========== Types ==========
+
+type LoginFormProps = {
+  redirectPath?: string;
+};
+
+function getRoleDefaultRedirect(user: AuthUser): string {
+  return user.roleName === 'admin' ? '/admin' : '/catalog';
+}
 
 // ========== Component ==========
 
-export function LoginForm() {
+export function LoginForm({ redirectPath }: LoginFormProps) {
   // ========== Hooks ==========
 
-  const locale = useLocale();
   const router = useRouter();
-  const t = useTranslations("auth.login");
-  const errorT = useTranslations("auth.errors");
-  const validationT = useTranslations("auth.validation");
+  const t = useTranslations('auth.login');
+  const errorT = useTranslations('auth.errors');
+  const validationT = useTranslations('auth.validation');
   const loginMutation = useLoginMutation();
 
   // ========== Derived Data ==========
 
   const validationSchema = createLoginSchema({
-    emailInvalid: validationT("emailInvalid"),
-    emailRequired: validationT("emailRequired"),
-    passwordRequired: validationT("passwordRequired"),
+    emailInvalid: validationT('emailInvalid'),
+    emailRequired: validationT('emailRequired'),
+    passwordRequired: validationT('passwordRequired'),
   });
 
   // ========== Render ==========
@@ -44,10 +53,10 @@ export function LoginForm() {
       <Formik<LoginFormValues>
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values) => {
+        onSubmit={values => {
           loginMutation.mutate(values, {
-            onSuccess() {
-              router.replace(`/${locale}/home`);
+            onSuccess(response) {
+              router.replace(redirectPath ?? getRoleDefaultRedirect(response.data.user));
             },
           });
         }}
@@ -60,50 +69,39 @@ export function LoginForm() {
           ) : null}
 
           <label className="grid gap-1 text-body font-medium">
-            {t("fields.email.label")}
+            {t('fields.email.label')}
             <Field
               as={Input}
               type="email"
               autoComplete="email"
               name="email"
-              placeholder={t("fields.email.placeholder")}
+              placeholder={t('fields.email.placeholder')}
             />
-            <ErrorMessage
-              className="text-caption text-danger"
-              component="span"
-              name="email"
-            />
+            <ErrorMessage className="text-caption text-danger" component="span" name="email" />
           </label>
 
           <label className="grid gap-1 text-body font-medium">
-            {t("fields.password.label")}
+            {t('fields.password.label')}
             <Field
               as={Input}
               type="password"
               autoComplete="current-password"
               name="password"
-              placeholder={t("fields.password.placeholder")}
+              placeholder={t('fields.password.placeholder')}
             />
-            <ErrorMessage
-              className="text-caption text-danger"
-              component="span"
-              name="password"
-            />
+            <ErrorMessage className="text-caption text-danger" component="span" name="password" />
           </label>
 
           <Button type="submit" disabled={loginMutation.isPending}>
-            {loginMutation.isPending ? t("submitLoading") : t("submit")}
+            {loginMutation.isPending ? t('submitLoading') : t('submit')}
           </Button>
         </Form>
       </Formik>
 
       <p className="mt-4 text-body text-muted">
-        {t("registerPrompt")}{" "}
-        <Link
-          className="font-medium text-accent hover:text-accent-hover"
-          href={`/${locale}/auth/register`}
-        >
-          {t("registerLink")}
+        {t('registerPrompt')}{' '}
+        <Link className="font-medium text-accent hover:text-accent-hover" href="/auth/register">
+          {t('registerLink')}
         </Link>
       </p>
     </>

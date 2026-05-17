@@ -1,18 +1,21 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { useLocale, useTranslations } from 'next-intl';
 import {
   useAdminCategoriesQuery,
+  useDeleteProductImageMutation,
   useAdminProductsQuery,
   useCreateProductMutation,
   useDeleteProductMutation,
+  useUploadProductImageMutation,
   useUpdateProductMutation,
 } from '@/domains/admin/model/hooks';
 import type { AdminProduct, ProductInput } from '@/domains/admin/model/types';
 import { formatCurrency } from '@/domains/admin/lib/admin-utils';
 import { Button } from '@/shared/ui/button';
+import { ProductImage } from '@/shared/ui/product-image/ProductImage';
 
 // ========== Types ==========
 
@@ -28,6 +31,8 @@ type ProductFormValues = {
 // ========== Constants ==========
 
 const ALL_CATEGORIES_VALUE = '__all__';
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 
 // ========== Hook ==========
 
@@ -44,6 +49,30 @@ export function useAdminProductsPage() {
   const [selectedCategoryId, setSelectedCategoryId] = useState(ALL_CATEGORIES_VALUE);
   const [editingProduct, setEditingProduct] = useState<AdminProduct | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<AdminProduct | null>(null);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const [selectedImagePreviewUrl, setSelectedImagePreviewUrl] = useState<string | null>(null);
+  const [selectedImageError, setSelectedImageError] = useState<string | null>(null);
+
+  const clearSelectedImage = useCallback(() => {
+    setSelectedImageFile(null);
+    setSelectedImageError(null);
+
+    setSelectedImagePreviewUrl(previous => {
+      if (previous) {
+        URL.revokeObjectURL(previous);
+      }
+
+      return null;
+    });
+  }, []);
+
+  const startEditing = useCallback(
+    (product: AdminProduct) => {
+      clearSelectedImage();
+      setEditingProduct(product);
+    },
+    [clearSelectedImage]
+  );
 
   // ========== Queries ==========
 
@@ -58,8 +87,10 @@ export function useAdminProductsPage() {
   const createMutation = useCreateProductMutation();
   const updateMutation = useUpdateProductMutation(editingProduct?.productId ?? 0);
   const deleteMutation = useDeleteProductMutation();
+  const uploadImageMutation = useUploadProductImageMutation();
+  const deleteImageMutation = useDeleteProductImageMutation();
 
-  // ========== Derived Data ==========
+  // ========== Derived Values ==========
 
   const categories = categoriesQuery.data?.data.categories ?? [];
   const products = productsQuery.data?.data.products ?? [];
@@ -88,10 +119,38 @@ export function useAdminProductsPage() {
 
   const formMode: 'create' | 'edit' = editingProduct ? 'edit' : 'create';
 
+  const currentImageUrl = editingProduct?.imageUrl ?? null;
+  const imagePreviewUrl = selectedImagePreviewUrl;
+
+  useEffect(() => {
+    return () => {
+      if (selectedImagePreviewUrl) {
+        URL.revokeObjectURL(selectedImagePreviewUrl);
+      }
+    };
+  }, [selectedImagePreviewUrl]);
+
   // ========== Table Columns ==========
 
   const columns = useMemo<Array<ColumnDef<AdminProduct>>>(
     () => [
+      {
+        id: 'image',
+        header: t('table.image'),
+        cell: ({ row }) => (
+          <div className="flex w-16 items-center justify-center">
+            <ProductImage
+              src={row.original.imageUrl}
+              alt={row.original.name}
+              fallbackLabel={t('table.noImage')}
+              variant="thumbnail"
+              size="sm"
+              showFallbackText={false}
+              sizes="48px"
+            />
+          </div>
+        ),
+      },
       {
         accessorKey: 'productId',
         header: t('table.id'),
@@ -123,7 +182,7 @@ export function useAdminProductsPage() {
         header: t('table.actions'),
         cell: ({ row }) => (
           <div className="flex gap-2">
-            <Button size="sm" variant="ghost" onClick={() => setEditingProduct(row.original)}>
+            <Button size="sm" variant="ghost" onClick={() => startEditing(row.original)}>
               {t('actions.edit')}
             </Button>
 
@@ -139,10 +198,31 @@ export function useAdminProductsPage() {
         ),
       },
     ],
-    [deleteMutation.isPending, locale, t]
+    [deleteMutation.isPending, locale, startEditing, t]
   );
 
   // ========== Handlers ==========
+
+  function selectImage(file: File | null) {
+    clearSelectedImage();
+
+    if (!file) {
+      return;
+    }
+
+    if (!ALLOWED_IMAGE_MIME_TYPES.has(file.type)) {
+      setSelectedImageError(t('form.image.unsupportedFormat'));
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_SIZE_BYTES) {
+      setSelectedImageError(t('form.image.fileTooLarge'));
+      return;
+    }
+
+    setSelectedImageFile(file);
+    setSelectedImagePreviewUrl(URL.createObjectURL(file));
+  }
 
   async function submitProduct(values: ProductFormValues) {
     const payload: ProductInput = {
@@ -154,17 +234,41 @@ export function useAdminProductsPage() {
       description: values.description.trim() || null,
     };
 
-    if (editingProduct) {
-      await updateMutation.mutateAsync(payload);
-      setEditingProduct(null);
-      return;
+    const savedProduct = editingProduct
+      ? (await updateMutation.mutateAsync(payload)).data.product
+      : (await createMutation.mutateAsync(payload)).data.product;
+
+    if (selectedImageFile) {
+      try {
+        await uploadImageMutation.mutateAsync({
+          productId: savedProduct.productId,
+          file: selectedImageFile,
+        });
+      } catch {
+        // Product save should remain successful even if image upload fails.
+      }
     }
 
-    await createMutation.mutateAsync(payload);
+    clearSelectedImage();
+
+    if (editingProduct) {
+      setEditingProduct(null);
+    }
   }
 
   function cancelEditing() {
+    clearSelectedImage();
     setEditingProduct(null);
+  }
+
+  async function removeProductImage() {
+    if (!editingProduct) {
+      return;
+    }
+
+    const response = await deleteImageMutation.mutateAsync(editingProduct.productId);
+    clearSelectedImage();
+    setEditingProduct(response.data.product);
   }
 
   async function confirmDelete() {
@@ -175,13 +279,14 @@ export function useAdminProductsPage() {
     await deleteMutation.mutateAsync(deleteTarget.productId);
 
     if (editingProduct?.productId === deleteTarget.productId) {
+      clearSelectedImage();
       setEditingProduct(null);
     }
 
     setDeleteTarget(null);
   }
 
-  // ========== Return ==========
+  // ========== Return Values ==========
 
   return {
     t,
@@ -195,10 +300,17 @@ export function useAdminProductsPage() {
     categoryFilterOptions,
     categoryOptions,
     isTableLoading: productsQuery.isLoading,
-    isFormSubmitting: createMutation.isPending || updateMutation.isPending,
+    isFormSubmitting: createMutation.isPending || updateMutation.isPending || uploadImageMutation.isPending,
+    isImageRemoving: deleteImageMutation.isPending,
     formMode,
     formInitialValues,
+    currentImageUrl,
+    imagePreviewUrl,
+    selectedImageError,
+    selectedImageFile,
     submitProduct,
+    selectImage,
+    removeProductImage,
     cancelEditing,
     deleteTarget,
     isDeleteDialogOpen: Boolean(deleteTarget),

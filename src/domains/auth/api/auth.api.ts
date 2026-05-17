@@ -1,21 +1,20 @@
-import { apiAuthHeader } from "@/shared/api/auth-header";
-import { apiClient } from "@/shared/api/client";
-import type {
-  LoginRequest,
-  RegisterRequest,
-} from "@/domains/auth/model/types/auth.interfaces";
+import { apiAuthHeader } from '@/shared/api/auth-header';
+import { apiClient } from '@/shared/api/client';
+import { useAuthSessionStore } from '@/domains/auth/model/stores/auth-session-store';
+import type { LoginRequest, RegisterRequest } from '@/domains/auth/model/types/auth.interfaces';
 import type {
   LoginResponse,
   LogoutResponse,
   RefreshResponse,
   RegisterResponse,
-} from "@/domains/auth/model/types/auth.types";
+} from '@/domains/auth/model/types/auth.types';
 
 // ===================== HELPERS =====================
 
 let refreshRequest: Promise<RefreshResponse> | null = null;
 
 function applyAccessToken(accessToken: string): void {
+  useAuthSessionStore.getState().setAccessToken(accessToken);
   apiAuthHeader.setAccessToken(apiClient, accessToken);
 }
 
@@ -23,10 +22,7 @@ function applyAccessToken(accessToken: string): void {
 
 export const authApi = {
   async register(payload: RegisterRequest): Promise<RegisterResponse> {
-    const response = await apiClient.post<RegisterResponse>(
-      "/auth/register",
-      payload,
-    );
+    const response = await apiClient.post<RegisterResponse>('/auth/register', payload);
 
     applyAccessToken(response.data.data.accessToken);
 
@@ -34,7 +30,7 @@ export const authApi = {
   },
 
   async login(payload: LoginRequest): Promise<LoginResponse> {
-    const response = await apiClient.post<LoginResponse>("/auth/login", payload);
+    const response = await apiClient.post<LoginResponse>('/auth/login', payload);
 
     applyAccessToken(response.data.data.accessToken);
 
@@ -43,8 +39,8 @@ export const authApi = {
 
   async refresh(): Promise<RefreshResponse> {
     refreshRequest ??= apiClient
-      .post<RefreshResponse>("/auth/refresh")
-      .then((response) => {
+      .post<RefreshResponse>('/auth/refresh')
+      .then(response => {
         applyAccessToken(response.data.data.accessToken);
 
         return response.data;
@@ -58,10 +54,11 @@ export const authApi = {
 
   async logout(): Promise<LogoutResponse> {
     try {
-      const response = await apiClient.post<LogoutResponse>("/auth/logout");
+      const response = await apiClient.post<LogoutResponse>('/auth/logout');
 
       return response.data;
     } finally {
+      useAuthSessionStore.getState().setAccessToken(null);
       apiAuthHeader.clear(apiClient);
     }
   },

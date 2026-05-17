@@ -6,6 +6,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 import { useState, type ReactNode } from "react";
 import toast from "react-hot-toast";
 import { apiError } from "@/shared/api/errors";
@@ -20,21 +21,39 @@ type QueryMeta = {
   suppressToast?: boolean;
 };
 
+type ErrorTranslator = ReturnType<typeof useTranslations<"common.errors">>;
+
 // ===================== HELPERS =====================
 
 function shouldShowToast(meta: unknown): boolean {
   return !(meta as QueryMeta | undefined)?.suppressToast;
 }
 
-function showApiErrorToast(error: unknown): void {
+function getApiErrorToastMessage(error: unknown, t: ErrorTranslator): string {
   const normalizedError = apiError.normalize(error);
 
-  toast.error(normalizedError.message || "Unexpected error");
+  if (normalizedError.code === "NETWORK_ERROR") {
+    return t("network");
+  }
+
+  if (normalizedError.code === "UNKNOWN_ERROR") {
+    return t("unexpected");
+  }
+
+  return normalizedError.message || t("unexpected");
+}
+
+function showApiErrorToast(error: unknown, t: ErrorTranslator): void {
+  toast.error(getApiErrorToastMessage(error, t));
 }
 
 // ===================== COMPONENT =====================
 
 export function ApiQueryProvider({ children }: ApiQueryProviderProps) {
+  // ===================== TRANSLATIONS =====================
+
+  const t = useTranslations("common.errors");
+
   // ===================== STATE =====================
 
   const [queryClient] = useState(
@@ -43,14 +62,14 @@ export function ApiQueryProvider({ children }: ApiQueryProviderProps) {
         mutationCache: new MutationCache({
           onError(error, _variables, _context, mutation) {
             if (shouldShowToast(mutation.meta)) {
-              showApiErrorToast(error);
+              showApiErrorToast(error, t);
             }
           },
         }),
         queryCache: new QueryCache({
           onError(error, query) {
             if (shouldShowToast(query.meta)) {
-              showApiErrorToast(error);
+              showApiErrorToast(error, t);
             }
           },
         }),

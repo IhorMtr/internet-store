@@ -1,3 +1,5 @@
+import type { PaymentMethod } from '@/shared/lib/payment-method';
+
 // ===================== TYPES =====================
 export type Category = {
   categoryId: number;
@@ -13,6 +15,8 @@ export type Product = {
   stockQuantity: number;
   discount: number;
   description: string | null;
+  imageUrl: string | null;
+  imagePublicId: string | null;
 };
 
 export type Supplier = {
@@ -73,7 +77,69 @@ export type ShipmentInput = {
 };
 
 export type PaymentInput = {
+  paymentMethod: PaymentMethod;
+};
+
+export type UserOrderListItem = {
+  orderId: number;
+  orderDate: string;
+  status: string;
+  totalAmount: number;
+  paymentMethod: string | null;
+  paymentStatus: string | null;
+  shippingStatus: string | null;
+};
+
+export type UserOrderItem = {
+  orderItemId: number;
+  productId: number;
+  productName: string;
+  productImageUrl: string | null;
+  quantity: number;
+  salePrice: number;
+  discount: number;
+  lineAmount: number;
+};
+
+export type UserOrderPaymentDetails = {
+  paymentDate: string | null;
+  amount: number | null;
+  paymentMethod: string | null;
+  status: string | null;
+};
+
+export type UserOrderShipmentDetails = {
+  shippingService: string | null;
+  trackingNumber: string | null;
+  shippingAddress: string | null;
+  shippingStatus: string | null;
+};
+
+export type UserOrderDetails = {
+  orderId: number;
+  orderDate: string;
+  status: string;
+  totalAmount: number;
+  selectedPaymentMethod: string | null;
+  payment: UserOrderPaymentDetails | null;
+  shipment: UserOrderShipmentDetails | null;
+  items: UserOrderItem[];
+};
+
+export type UserPayment = {
+  paymentId: number;
+  orderId: number;
+  paymentDate: string;
+  amount: number;
   paymentMethod: string;
+  status: string;
+};
+
+export type UserOrderStockConflict = {
+  productId: number;
+  productName: string;
+  requestedQuantity: number;
+  availableQuantity: number;
 };
 
 export type SoldProductReportRow = {

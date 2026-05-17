@@ -18,9 +18,11 @@ export function AdminOrderDetailsPage({ orderId }: AdminOrderDetailsPageProps) {
   const {
     createShipment,
     detailsRows,
+    effectiveShippingStatus,
     formatCurrency,
     formatDate,
     formatDateTime,
+    formatPaymentMethod,
     head,
     isCreatingShipment,
     isDetailsLoading,
@@ -67,8 +69,8 @@ export function AdminOrderDetailsPage({ orderId }: AdminOrderDetailsPageProps) {
           <p className="text-sm text-muted">
             {t('meta.shippingStatus')}:{' '}
             <StatusBadge
-              label={adminT(getAdminStatusLabelKey(head.shipping_status, 'shipment'))}
-              tone={toStatusTone(head.shipping_status)}
+              label={adminT(getAdminStatusLabelKey(effectiveShippingStatus, 'shipment'))}
+              tone={toStatusTone(effectiveShippingStatus)}
             />
           </p>
           <p className="text-sm text-muted">
@@ -77,6 +79,9 @@ export function AdminOrderDetailsPage({ orderId }: AdminOrderDetailsPageProps) {
               label={adminT(getAdminStatusLabelKey(head.payment_status, 'payment'))}
               tone={toStatusTone(head.payment_status)}
             />
+          </p>
+          <p className="text-sm text-muted">
+            {t('meta.paymentMethod')}: <span className="text-primary">{formatPaymentMethod(head.payment_method)}</span>
           </p>
           <p className="text-sm text-muted">
             {t('meta.paymentDate')}: <span className="text-primary">{formatDate(head.payment_date, locale)}</span>

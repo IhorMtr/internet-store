@@ -144,3 +144,17 @@ export function toStatusTone(status: string | null | undefined): 'neutral' | 'su
 
   return 'neutral';
 }
+
+export function getEffectiveAdminShippingStatus(
+  orderStatus: string | null | undefined,
+  shippingStatus: string | null | undefined
+): string | null {
+  const normalizedOrderStatus = toStatusKey(orderStatus);
+  const canonicalOrderStatus = statusAliases[normalizedOrderStatus] ?? normalizedOrderStatus;
+
+  if (canonicalOrderStatus === 'CANCELLED') {
+    return 'CANCELLED';
+  }
+
+  return shippingStatus ?? null;
+}

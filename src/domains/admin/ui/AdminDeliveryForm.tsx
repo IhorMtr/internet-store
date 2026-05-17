@@ -34,13 +34,15 @@ type AdminDeliveryFormProps = {
   onSubmit: (values: DeliveryFormValues) => Promise<void>;
 };
 
-// ========== Helpers ==========
+// ========== Constants ==========
 
 const emptyItem: DeliveryItemFormValues = {
   productId: '',
   quantity: '1',
   supplyPrice: '0',
 };
+
+// ========== Form Helpers ==========
 
 function isFieldInvalid(error: unknown, isTouched: unknown, submitCount: number) {
   return Boolean((isTouched || submitCount > 0) && error);
@@ -59,7 +61,7 @@ export function AdminDeliveryForm({
 
   const t = useTranslations('AdminDeliveries');
 
-  // ========== Schemas ==========
+  // ========== Validation ==========
 
   const validationSchema = createAdminDeliverySchema({
     supplierRequired: t('validation.supplierRequired'),
@@ -73,7 +75,7 @@ export function AdminDeliveryForm({
     priceInvalid: t('validation.priceInvalid'),
   });
 
-  // ========== Render ==========
+  // ========== Component ==========
 
   return (
     <Formik<DeliveryFormValues>

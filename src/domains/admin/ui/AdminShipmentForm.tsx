@@ -26,7 +26,7 @@ type AdminShipmentFormProps = {
   onUpdate: (values: ShipmentFormValues) => Promise<void>;
 };
 
-// ========== Helpers ==========
+// ========== Form Helpers ==========
 
 function isFieldInvalid(error: unknown, isTouched: unknown, submitCount: number) {
   return Boolean((isTouched || submitCount > 0) && error);
@@ -45,7 +45,7 @@ export function AdminShipmentForm({
 
   const t = useTranslations('AdminOrderDetails');
 
-  // ========== Schemas ==========
+  // ========== Validation ==========
 
   const validationSchema = createAdminShipmentSchema({
     serviceRequired: t('shipmentForm.validation.serviceRequired'),
@@ -54,7 +54,7 @@ export function AdminShipmentForm({
     statusRequired: t('shipmentForm.validation.statusRequired'),
   });
 
-  // ========== Render ==========
+  // ========== Component ==========
 
   return (
     <Formik<ShipmentFormValues>

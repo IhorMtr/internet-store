@@ -42,7 +42,7 @@ export function useAdminCategoriesPage() {
   const updateMutation = useUpdateCategoryMutation(editingCategoryId ?? 0);
   const deleteMutation = useDeleteCategoryMutation();
 
-  // ========== Derived Data ==========
+  // ========== Derived Values ==========
 
   const categories = categoriesQuery.data?.data.categories ?? [];
 
@@ -131,7 +131,7 @@ export function useAdminCategoriesPage() {
     setDeleteTarget(null);
   }
 
-  // ========== Return ==========
+  // ========== Return Values ==========
 
   return {
     t,

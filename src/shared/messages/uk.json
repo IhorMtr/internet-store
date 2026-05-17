@@ -4,6 +4,10 @@
       "language": "Мова",
       "ukrainian": "Українська",
       "english": "Англійська"
+    },
+    "errors": {
+      "network": "Помилка мережі. Перевірте з'єднання.",
+      "unexpected": "Неочікувана помилка"
     }
   },
   "auth": {
@@ -61,6 +65,10 @@
     "menu": "Меню",
     "adminPanel": "Адмін-панель",
     "settings": "Налаштування",
+    "store": "Магазин",
+    "catalog": "Каталог",
+    "cart": "Кошик ({count})",
+    "orders": "Мої замовлення",
     "language": "Мова",
     "theme": "Тема",
     "signOut": "Вийти",
@@ -71,6 +79,241 @@
   "themeSwitcher": {
     "light": "Світла",
     "dark": "Темна"
+  },
+  "Home": {
+    "title": "Головна",
+    "subtitle": "Оберіть, куди перейти далі.",
+    "links": {
+      "catalog": "Каталог",
+      "cart": "Кошик",
+      "orders": "Мої замовлення",
+      "admin": "Адмін-панель"
+    }
+  },
+  "Store": {
+    "stockIssues": {
+      "title": "Недостатньо товару на складі",
+      "inCart": "У кошику: {requested}",
+      "available": "Доступно: {available}",
+      "productUnavailable": "Товар більше недоступний",
+      "syncCart": "Оновити кошик",
+      "backToCart": "Повернутися до кошика"
+    },
+    "statuses": {
+      "order": {
+        "CREATED": "Створено",
+        "PENDING": "Очікує",
+        "PROCESSING": "Готується",
+        "PAID": "Оплачено",
+        "CANCELLED": "Скасовано",
+        "FAILED": "Не вдалося",
+        "UNKNOWN": "Невідомо"
+      },
+      "shipment": {
+        "CREATED": "Створено",
+        "PREPARING": "Готується",
+        "PROCESSING": "Готується",
+        "IN_TRANSIT": "В дорозі",
+        "DELIVERED": "Доставлено",
+        "CANCELLED": "Скасовано",
+        "FAILED": "Не вдалося",
+        "UNKNOWN": "Невідомо"
+      },
+      "payment": {
+        "CREATED": "Створено",
+        "PENDING": "Очікує",
+        "PROCESSING": "Готується",
+        "PAID": "Оплачено",
+        "CANCELLED": "Скасовано",
+        "FAILED": "Не вдалося",
+        "UNKNOWN": "Невідомо"
+      }
+    }
+  },
+  "PaymentMethods": {
+    "card": "Картка",
+    "iban": "IBAN",
+    "cash_on_delivery": "Оплата при отриманні",
+    "unknown": "Невідомо"
+  },
+  "StorefrontAccess": {
+    "loading": "Перевірка доступу...",
+    "forbiddenTitle": "Вітрина доступна лише для клієнтів",
+    "forbiddenDescription": "Використовуйте адмін-панель для керування товарами, замовленнями та звітами.",
+    "goToAdmin": "Перейти в адмін-панель"
+  },
+  "Catalog": {
+    "title": "Каталог",
+    "subtitle": "Переглядайте доступні товари та додавайте їх у кошик.",
+    "loading": "Завантаження товарів...",
+    "empty": "Товарів не знайдено.",
+    "cartLink": "Кошик ({count})",
+    "filters": {
+      "searchLabel": "Пошук",
+      "searchPlaceholder": "Введіть назву товару",
+      "categoryLabel": "Категорія",
+      "allCategories": "Усі категорії"
+    },
+    "card": {
+      "unknownCategory": "Категорія",
+      "discount": "-{discount}%",
+      "stock": "Залишок: {stock}",
+      "inCart": "У кошику: {quantity}",
+      "noImage": "Без зображення",
+      "details": "Деталі",
+      "addToCart": "Додати в кошик",
+      "outOfStock": "Немає в наявності"
+    }
+  },
+  "ProductDetails": {
+    "loading": "Завантаження товару...",
+    "notFound": "Товар не знайдено.",
+    "backToCatalog": "Назад до каталогу",
+    "unknownCategory": "Категорія",
+    "discount": "-{discount}%",
+    "noImage": "Без зображення",
+    "noDescription": "Опис відсутній.",
+    "stock": "Залишок: {stock}",
+    "inCart": "У кошику: {quantity}",
+    "quantity": "Кількість",
+    "addToCart": "Додати в кошик",
+    "outOfStock": "Немає в наявності"
+  },
+  "Cart": {
+    "title": "Кошик",
+    "subtitle": "Перевірте товари перед оформленням.",
+    "empty": "Кошик порожній.",
+    "goToCatalog": "Перейти до каталогу",
+    "checkout": "Оформити",
+    "checkoutDisabledStockIssues": "Спочатку усуньте проблеми із залишками.",
+    "clear": "Очистити кошик",
+    "summary": {
+      "title": "Підсумок",
+      "items": "Товарів",
+      "subtotal": "Проміжна сума",
+      "total": "Разом"
+    },
+    "item": {
+      "stock": "Залишок: {stock}",
+      "noImage": "Без зображення",
+      "quantity": "Кількість",
+      "increment": "Збільшити кількість",
+      "decrement": "Зменшити кількість",
+      "remove": "Видалити товар"
+    }
+  },
+  "Checkout": {
+    "title": "Оформлення",
+    "subtitle": "Створіть замовлення з кошика.",
+    "empty": "Кошик порожній.",
+    "goToCatalog": "Перейти до каталогу",
+    "form": {
+      "title": "Доставка",
+      "shippingSectionTitle": "Доставка",
+      "shippingServiceLabel": "Служба доставки",
+      "shippingServicePlaceholder": "Оберіть службу доставки",
+      "shippingServiceOptions": {
+        "novaPoshta": "Нова пошта",
+        "ukrposhta": "Укрпошта",
+        "meest": "Meest"
+      },
+      "shippingAddressLabel": "Адреса доставки",
+      "shippingAddressPlaceholder": "Місто, відділення, вулиця",
+      "paymentSectionTitle": "Оплата",
+      "paymentMethodLabel": "Метод оплати",
+      "paymentMethodPlaceholder": "Оберіть метод оплати",
+      "submit": "Створити замовлення",
+      "submitting": "Створення..."
+    },
+    "summary": {
+      "title": "Підсумок замовлення",
+      "items": "Товарів",
+      "noImage": "Без зображення",
+      "total": "Разом"
+    },
+    "validation": {
+      "shippingServiceRequired": "Служба доставки обов'язкова",
+      "shippingAddressRequired": "Адреса доставки обов'язкова",
+      "paymentMethodRequired": "Метод оплати обов'язковий"
+    }
+  },
+  "Orders": {
+    "title": "Мої замовлення",
+    "subtitle": "Відстежуйте замовлення, оплату та доставку.",
+    "goToCatalog": "Каталог",
+    "actions": {
+      "open": "Відкрити"
+    },
+    "table": {
+      "id": "Замовлення",
+      "date": "Дата",
+      "status": "Статус замовлення",
+      "total": "Сума",
+      "paymentMethod": "Метод оплати",
+      "paymentStatus": "Оплата",
+      "shippingStatus": "Доставка",
+      "actions": "Дії",
+      "loading": "Завантаження замовлень...",
+      "empty": "Замовлень не знайдено."
+    }
+  },
+  "OrderDetails": {
+    "title": "Замовлення #{orderId}",
+    "subtitle": "Перегляньте товари, доставку та оплату.",
+    "loading": "Завантаження замовлення...",
+    "notFound": "Замовлення не знайдено.",
+    "backToOrders": "Назад до замовлень",
+    "meta": {
+      "date": "Дата замовлення",
+      "total": "Разом",
+      "orderStatus": "Статус замовлення",
+      "paymentStatus": "Статус оплати",
+      "shippingStatus": "Статус доставки",
+      "paymentDate": "Дата оплати"
+    },
+    "itemsTable": {
+      "product": "Товар",
+      "noImage": "Без зображення",
+      "quantity": "Кількість",
+      "salePrice": "Ціна продажу",
+      "discount": "Знижка",
+      "lineAmount": "Сума рядка",
+      "loading": "Завантаження товарів...",
+      "empty": "Товарів у замовленні не знайдено."
+    },
+    "shipment": {
+      "title": "Доставка",
+      "service": "Служба доставки",
+      "address": "Адреса доставки",
+      "trackingNumber": "Трек-номер",
+      "trackingNumberNotProvided": "Не вказано"
+    },
+    "payment": {
+      "title": "Оплата",
+      "paid": "Оплату зареєстровано.",
+      "unpaid": "Не оплачено.",
+      "cancelledInfo": "Замовлення скасовано.",
+      "methodLabel": "Метод оплати",
+      "dateLabel": "Дата оплати",
+      "methodPlaceholder": "Оберіть метод оплати",
+      "submit": "Оплатити замовлення",
+      "submitting": "Оплата...",
+      "actions": {
+        "pay": "Оплатити замовлення",
+        "paying": "Оплата...",
+        "cancel": "Скасувати замовлення",
+        "cancelling": "Скасування..."
+      },
+      "validation": {
+        "paymentMethodRequired": "Метод оплати обов'язковий"
+      }
+    },
+    "cancelDialog": {
+      "title": "Скасувати замовлення",
+      "description": "Ви впевнені, що хочете скасувати це замовлення? Товари будуть повернуті на склад.",
+      "confirm": "Відмовитися",
+      "cancel": "Назад"
+    }
   },
   "Admin": {
     "loading": "Перевірка доступу до адмінки...",
@@ -207,6 +450,19 @@
       "discountLabel": "Знижка (%)",
       "descriptionLabel": "Опис",
       "descriptionPlaceholder": "Опис товару",
+      "image": {
+        "label": "Зображення товару",
+        "uploadButton": "Завантажити зображення",
+        "replaceButton": "Замінити зображення",
+        "removeButton": "Видалити зображення",
+        "removing": "Видалення...",
+        "noImage": "Зображення не вибрано",
+        "selectedFile": "Вибраний файл",
+        "clearSelectedButton": "Очистити вибір",
+        "hint": "Підтримувані формати: JPEG, PNG, WEBP. Максимальний розмір: 5 МБ.",
+        "unsupportedFormat": "Непідтримуваний формат файлу",
+        "fileTooLarge": "Файл завеликий"
+      },
       "createButton": "Створити",
       "updateButton": "Зберегти зміни",
       "cancelButton": "Скасувати",
@@ -225,12 +481,14 @@
       "descriptionTooLong": "Опис не може бути довшим за 2000 символів"
     },
     "table": {
+      "image": "Зображення",
       "id": "ID",
       "name": "Назва",
       "categoryId": "ID категорії",
       "price": "Ціна",
       "stock": "Залишок",
       "discount": "Знижка",
+      "noImage": "Без зображення",
       "actions": "Дії",
       "loading": "Завантаження товарів...",
       "empty": "Товарів не знайдено."
@@ -387,6 +645,7 @@
       "orderStatus": "Статус замовлення",
       "shippingStatus": "Статус доставки",
       "paymentStatus": "Статус оплати",
+      "paymentMethod": "Метод оплати",
       "paymentDate": "Дата оплати"
     },
     "itemsTable": {
@@ -430,7 +689,7 @@
     "paymentForm": {
       "title": "Оплата",
       "methodLabel": "Метод оплати",
-      "methodPlaceholder": "card",
+      "methodPlaceholder": "Оберіть метод оплати",
       "submitButton": "Зареєструвати оплату",
       "submitting": "Реєстрація...",
       "validation": {
@@ -441,9 +700,16 @@
   "AdminReports": {
     "title": "Звіти",
     "subtitle": "Аналізуйте продажі та ефективність категорій.",
+    "tabs": {
+      "soldProducts": "Продані товари",
+      "topCategories": "Топ категорій"
+    },
     "soldProducts": {
+      "title": "Продані товари",
+      "description": "Показує товари, продані за вибрану дату, їх кількість і суму продажів.",
       "dateLabel": "Дата",
       "applyButton": "Сформувати звіт",
+      "generating": "Формування...",
       "validation": {
         "dateRequired": "Дата обов'язкова"
       },
@@ -457,9 +723,12 @@
       }
     },
     "topCategories": {
+      "title": "Топ категорій",
+      "description": "Показує категорії з найбільшими продажами за вибраний період.",
       "dateFromLabel": "Дата від",
       "dateToLabel": "Дата до",
       "applyButton": "Сформувати звіт",
+      "generating": "Формування...",
       "validation": {
         "dateFromRequired": "Початкова дата обов'язкова",
         "dateToRequired": "Кінцева дата обов'язкова",

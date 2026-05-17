@@ -14,7 +14,9 @@ export {
   useAdminProductsQuery,
   useAdminProductQuery,
   useCreateProductMutation,
+  useDeleteProductImageMutation,
   useDeleteProductMutation,
+  useUploadProductImageMutation,
   useUpdateProductMutation,
 } from '@/domains/admin/model/hooks/use-admin-products';
 

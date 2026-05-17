@@ -6,7 +6,14 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useAdminOrdersQuery } from '@/domains/admin/model/hooks';
 import type { AdminOrderListItem, OrdersFilters } from '@/domains/admin/model/types';
 import { Link } from '@/i18n/navigation';
-import { formatCurrency, formatDateTime, getAdminStatusLabelKey, toStatusTone } from '@/domains/admin/lib/admin-utils';
+import {
+  formatCurrency,
+  formatDateTime,
+  getAdminStatusLabelKey,
+  getEffectiveAdminShippingStatus,
+  toStatusTone,
+} from '@/domains/admin/lib/admin-utils';
+import { createPaymentMethodLabels, getPaymentMethodLabel } from '@/shared/lib/payment-method';
 import type { SelectOption } from '@/shared/ui/select';
 import { StatusBadge } from '@/shared/ui/status-badge';
 
@@ -22,6 +29,7 @@ export function useAdminOrdersPage() {
   const locale = useLocale();
   const t = useTranslations('AdminOrders');
   const adminT = useTranslations('Admin');
+  const paymentMethodT = useTranslations('PaymentMethods');
 
   // ========== State ==========
 
@@ -43,6 +51,7 @@ export function useAdminOrdersPage() {
     status: status === ALL_ORDER_STATUSES_VALUE ? null : status.trim() || null,
     customerId: customerIdRaw ? Number(customerIdRaw) || null : null,
   };
+  const paymentMethodLabels = useMemo(() => createPaymentMethodLabels(key => paymentMethodT(key)), [paymentMethodT]);
 
   // ========== Queries ==========
 
@@ -92,17 +101,24 @@ export function useAdminOrdersPage() {
       {
         accessorKey: 'paymentMethod',
         header: t('table.paymentMethod'),
-        cell: ({ row }) => row.original.paymentMethod || '-',
+        cell: ({ row }) => getPaymentMethodLabel(row.original.paymentMethod, paymentMethodLabels),
       },
       {
         accessorKey: 'shippingStatus',
         header: t('table.shippingStatus'),
-        cell: ({ row }) => (
-          <StatusBadge
-            label={adminT(getAdminStatusLabelKey(row.original.shippingStatus, 'shipment'))}
-            tone={toStatusTone(row.original.shippingStatus)}
-          />
-        ),
+        cell: ({ row }) => {
+          const effectiveShippingStatus = getEffectiveAdminShippingStatus(
+            row.original.status,
+            row.original.shippingStatus
+          );
+
+          return (
+            <StatusBadge
+              label={adminT(getAdminStatusLabelKey(effectiveShippingStatus, 'shipment'))}
+              tone={toStatusTone(effectiveShippingStatus)}
+            />
+          );
+        },
       },
       {
         id: 'actions',
@@ -117,7 +133,7 @@ export function useAdminOrdersPage() {
         ),
       },
     ],
-    [adminT, locale, t]
+    [adminT, locale, paymentMethodLabels, t]
   );
 
   // ========== Handlers ==========

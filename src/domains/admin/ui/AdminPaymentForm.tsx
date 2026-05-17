@@ -3,14 +3,19 @@
 import { Form, Formik } from 'formik';
 import { useTranslations } from 'next-intl';
 import { createAdminPaymentSchema } from '@/domains/admin/model/validation';
+import {
+  createPaymentMethodLabels,
+  createPaymentMethodOptions,
+  type PaymentMethod,
+} from '@/shared/lib/payment-method';
 import { Button } from '@/shared/ui/button';
 import { FormField } from '@/shared/ui/form-field';
-import { Input } from '@/shared/ui/input';
+import { Select } from '@/shared/ui/select';
 
 // ========== Types ==========
 
 type PaymentFormValues = {
-  paymentMethod: string;
+  paymentMethod: PaymentMethod;
 };
 
 type AdminPaymentFormProps = {
@@ -31,12 +36,15 @@ export function AdminPaymentForm({ initialValues, isSubmitting, onSubmit }: Admi
   // ========== Translations ==========
 
   const t = useTranslations('AdminOrderDetails');
+  const paymentMethodT = useTranslations('PaymentMethods');
 
   // ========== Schemas ==========
 
   const validationSchema = createAdminPaymentSchema({
     methodRequired: t('paymentForm.validation.methodRequired'),
   });
+  const paymentMethodLabels = createPaymentMethodLabels(key => paymentMethodT(key));
+  const paymentMethodOptions = createPaymentMethodOptions(paymentMethodLabels);
 
   // ========== Render ==========
 
@@ -50,17 +58,21 @@ export function AdminPaymentForm({ initialValues, isSubmitting, onSubmit }: Admi
         helpers.resetForm();
       }}
     >
-      {({ errors, handleBlur, handleChange, submitCount, touched, values }) => {
+      {({ errors, setFieldTouched, setFieldValue, submitCount, touched, values }) => {
         const paymentMethodInvalid = isFieldInvalid(errors.paymentMethod, touched.paymentMethod, submitCount);
 
         return (
           <Form className="mt-4 grid gap-3 md:max-w-md">
             <FormField label={t('paymentForm.methodLabel')} required error={paymentMethodInvalid}>
-              <Input
+              <Select
                 name="paymentMethod"
                 value={values.paymentMethod}
-                onChange={handleChange}
-                onBlur={handleBlur}
+                onValueChange={value => {
+                  setFieldValue('paymentMethod', value);
+                  setFieldTouched('paymentMethod', true, false);
+                }}
+                onBlur={() => setFieldTouched('paymentMethod', true, false)}
+                options={paymentMethodOptions}
                 placeholder={t('paymentForm.methodPlaceholder')}
                 error={paymentMethodInvalid}
               />

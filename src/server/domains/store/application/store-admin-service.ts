@@ -4,11 +4,8 @@ import type {
   AdminOrderListItem,
   AdminSummary,
   Category,
-  CreateDeliveryInput,
   Delivery,
-  PaymentInput,
   Product,
-  ShipmentInput,
   SoldProductReportRow,
   Supplier,
   TopCategoryReportRow,
@@ -16,195 +13,90 @@ import type {
 import type {
   CategoryInput,
   OrdersListFilters,
+  ProductImageMeta,
   ProductInput,
   ProductListFilters,
   StoreRepository,
   SupplierInput,
 } from '@/server/domains/store/application/store-ports';
+import {
+  storeAdminCategoryInputSchema,
+  storeAdminDeliveryInputSchema,
+  storeAdminPaymentInputSchema,
+  storeAdminProductInputSchema,
+  storeAdminReportDateSchema,
+  storeAdminShipmentInputSchema,
+  storeAdminSupplierInputSchema,
+} from '@/server/domains/store/application/validation';
+import { validateInput } from '@/server/shared/validation/validate-input';
 
-// ===================== TYPES =====================
+// ===================== Types =====================
+
 type StoreAdminServiceDependencies = {
   repository: StoreRepository;
 };
 
 type BodyInput = Record<string, unknown>;
 
-// ===================== CONSTANTS =====================
+// ===================== Constants =====================
+
 const LOW_STOCK_THRESHOLD = 5;
 
-// ===================== HELPERS =====================
-function readInteger(value: unknown, messageKey: 'store.validation.invalidId'): number {
-  if (typeof value !== 'number' || !Number.isInteger(value) || value <= 0) {
-    throw storeError.create('VALIDATION_ERROR', messageKey, 400);
-  }
+// ===================== Schemas =====================
 
-  return value;
+function parseCategoryInput(input: BodyInput): CategoryInput {
+  return validateInput(storeAdminCategoryInputSchema, input, () =>
+    storeError.create('VALIDATION_ERROR', 'store.validation.requiredField', 400)
+  );
 }
 
-function readRequiredString(value: unknown, messageKey: 'store.validation.requiredField'): string {
-  if (typeof value !== 'string') {
-    throw storeError.create('VALIDATION_ERROR', messageKey, 400);
-  }
-
-  const normalized = value.trim();
-
-  if (normalized.length === 0) {
-    throw storeError.create('VALIDATION_ERROR', 'store.validation.nonEmptyString', 400);
-  }
-
-  return normalized;
+function parseProductInput(input: BodyInput): ProductInput {
+  return validateInput(storeAdminProductInputSchema, input, () =>
+    storeError.create('VALIDATION_ERROR', 'store.validation.requiredField', 400)
+  );
 }
 
-function readOptionalString(value: unknown): string | null {
-  if (value === undefined || value === null) {
-    return null;
-  }
-
-  if (typeof value !== 'string') {
-    throw storeError.create('VALIDATION_ERROR', 'store.validation.nonEmptyString', 400);
-  }
-
-  const normalized = value.trim();
-
-  return normalized.length > 0 ? normalized : null;
+function parseSupplierInput(input: BodyInput): SupplierInput {
+  return validateInput(storeAdminSupplierInputSchema, input, () =>
+    storeError.create('VALIDATION_ERROR', 'store.validation.requiredField', 400)
+  );
 }
 
-function readNonNegativeNumber(value: unknown, messageKey: 'store.validation.stockNonNegative'): number {
-  if (typeof value !== 'number' || Number.isNaN(value) || !Number.isInteger(value) || value < 0) {
-    throw storeError.create('VALIDATION_ERROR', messageKey, 400);
-  }
-
-  return value;
+function parseShipmentInput(input: BodyInput) {
+  return validateInput(storeAdminShipmentInputSchema, input, () =>
+    storeError.create('VALIDATION_ERROR', 'store.validation.requiredField', 400)
+  );
 }
 
-function readPositiveInteger(value: unknown, messageKey: 'store.validation.quantityPositive'): number {
-  if (typeof value !== 'number' || Number.isNaN(value) || !Number.isInteger(value) || value <= 0) {
-    throw storeError.create('VALIDATION_ERROR', messageKey, 400);
-  }
-
-  return value;
+function parsePaymentInput(input: BodyInput) {
+  return validateInput(storeAdminPaymentInputSchema, input, () =>
+    storeError.create('VALIDATION_ERROR', 'store.paymentMethodInvalid', 400)
+  );
 }
 
-function readPositiveNumber(
-  value: unknown,
-  messageKey: 'store.validation.pricePositive' | 'store.validation.supplyPricePositive'
-): number {
-  if (typeof value !== 'number' || Number.isNaN(value) || value <= 0) {
-    throw storeError.create('VALIDATION_ERROR', messageKey, 400);
-  }
-
-  return value;
+function parseDeliveryInput(input: BodyInput) {
+  return validateInput(storeAdminDeliveryInputSchema, input, () =>
+    storeError.create('VALIDATION_ERROR', 'store.deliveryCreateFailed', 400)
+  );
 }
 
-function readDiscount(value: unknown): number {
-  if (typeof value !== 'number' || Number.isNaN(value) || value < 0 || value > 100) {
-    throw storeError.create('VALIDATION_ERROR', 'store.validation.discountRange', 400);
-  }
-
-  return value;
+function parseReportDate(date: string): string {
+  return validateInput(storeAdminReportDateSchema, date, () =>
+    storeError.create('VALIDATION_ERROR', 'store.validation.dateInvalid', 400)
+  );
 }
 
-function readDate(value: unknown): string {
-  if (typeof value !== 'string') {
-    throw storeError.create('VALIDATION_ERROR', 'store.validation.dateInvalid', 400);
-  }
-
-  const normalized = value.trim();
-
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(normalized)) {
-    throw storeError.create('VALIDATION_ERROR', 'store.validation.dateInvalid', 400);
-  }
-
-  const parsed = new Date(`${normalized}T00:00:00.000Z`);
-
-  if (Number.isNaN(parsed.getTime())) {
-    throw storeError.create('VALIDATION_ERROR', 'store.validation.dateInvalid', 400);
-  }
-
-  return normalized;
-}
-
-function normalizeCategoryInput(input: BodyInput): CategoryInput {
-  return {
-    categoryName: readRequiredString(input.categoryName, 'store.validation.requiredField'),
-    description: readOptionalString(input.description),
-  };
-}
-
-function normalizeProductInput(input: BodyInput): ProductInput {
-  return {
-    categoryId: readInteger(input.categoryId, 'store.validation.invalidId'),
-    name: readRequiredString(input.name, 'store.validation.requiredField'),
-    price: readPositiveNumber(input.price, 'store.validation.pricePositive'),
-    stockQuantity: readNonNegativeNumber(input.stockQuantity, 'store.validation.stockNonNegative'),
-    discount: readDiscount(input.discount),
-    description: readOptionalString(input.description),
-  };
-}
-
-function normalizeSupplierInput(input: BodyInput): SupplierInput {
-  return {
-    name: readRequiredString(input.name, 'store.validation.requiredField'),
-    phoneNumber: readOptionalString(input.phoneNumber),
-    email: readOptionalString(input.email),
-  };
-}
-
-function normalizeShipmentInput(input: BodyInput): ShipmentInput {
-  return {
-    shippingService: readRequiredString(input.shippingService, 'store.validation.requiredField'),
-    trackingNumber: readRequiredString(input.trackingNumber, 'store.validation.requiredField'),
-    shippingAddress: readRequiredString(input.shippingAddress, 'store.validation.requiredField'),
-    shippingStatus: readRequiredString(input.shippingStatus, 'store.validation.requiredField'),
-  };
-}
-
-function normalizePaymentInput(input: BodyInput): PaymentInput {
-  return {
-    paymentMethod: readRequiredString(input.paymentMethod, 'store.validation.requiredField'),
-  };
-}
-
-function normalizeDeliveryInput(input: BodyInput): CreateDeliveryInput {
-  const supplierId = readInteger(input.supplierId, 'store.validation.invalidId');
-  const deliveryDate = readDate(input.deliveryDate);
-  const invoiceNumber = readRequiredString(input.invoiceNumber, 'store.validation.requiredField');
-
-  if (!Array.isArray(input.items) || input.items.length === 0) {
-    throw storeError.create('VALIDATION_ERROR', 'store.validation.deliveryItemsRequired', 400);
-  }
-
-  const items = input.items.map(item => {
-    if (!item || typeof item !== 'object' || Array.isArray(item)) {
-      throw storeError.create('VALIDATION_ERROR', 'store.validation.deliveryItemInvalid', 400);
-    }
-
-    const deliveryItem = item as Record<string, unknown>;
-
-    return {
-      productId: readInteger(deliveryItem.productId, 'store.validation.invalidId'),
-      quantity: readPositiveInteger(deliveryItem.quantity, 'store.validation.quantityPositive'),
-      supplyPrice: readPositiveNumber(deliveryItem.supplyPrice, 'store.validation.supplyPricePositive'),
-    };
-  });
-
-  return {
-    supplierId,
-    deliveryDate,
-    invoiceNumber,
-    items,
-  };
-}
+// ===================== Patch Helpers =====================
 
 function mergeCategoryPatch(existing: Category, input: BodyInput): CategoryInput {
-  return normalizeCategoryInput({
+  return parseCategoryInput({
     categoryName: input.categoryName ?? existing.categoryName,
     description: input.description ?? existing.description,
   });
 }
 
 function mergeProductPatch(existing: Product, input: BodyInput): ProductInput {
-  return normalizeProductInput({
+  return parseProductInput({
     categoryId: input.categoryId ?? existing.categoryId,
     name: input.name ?? existing.name,
     price: input.price ?? existing.price,
@@ -215,21 +107,24 @@ function mergeProductPatch(existing: Product, input: BodyInput): ProductInput {
 }
 
 function mergeSupplierPatch(existing: Supplier, input: BodyInput): SupplierInput {
-  return normalizeSupplierInput({
+  return parseSupplierInput({
     name: input.name ?? existing.name,
     phoneNumber: input.phoneNumber ?? existing.phoneNumber,
     email: input.email ?? existing.email,
   });
 }
 
-// ===================== SERVICES =====================
+// ===================== Services =====================
+
 export function createStoreAdminService({ repository }: StoreAdminServiceDependencies) {
+  // ===================== Category Methods =====================
+
   async function listCategories(): Promise<Category[]> {
     return repository.listCategories();
   }
 
   async function createCategory(input: BodyInput): Promise<Category> {
-    return repository.createCategory(normalizeCategoryInput(input));
+    return repository.createCategory(parseCategoryInput(input));
   }
 
   async function getCategoryById(categoryId: number): Promise<Category> {
@@ -266,12 +161,14 @@ export function createStoreAdminService({ repository }: StoreAdminServiceDepende
     }
   }
 
+  // ===================== Product Methods =====================
+
   async function listProducts(filters: ProductListFilters): Promise<Product[]> {
     return repository.listProducts(filters);
   }
 
   async function createProduct(input: BodyInput): Promise<Product> {
-    const normalizedInput = normalizeProductInput(input);
+    const normalizedInput = parseProductInput(input);
     const category = await repository.getCategoryById(normalizedInput.categoryId);
 
     if (!category) {
@@ -322,12 +219,44 @@ export function createStoreAdminService({ repository }: StoreAdminServiceDepende
     }
   }
 
+  async function getProductImageMeta(productId: number): Promise<ProductImageMeta> {
+    const meta = await repository.getProductImageMeta(productId);
+
+    if (!meta) {
+      throw storeError.create('NOT_FOUND', 'store.productNotFound', 404);
+    }
+
+    return meta;
+  }
+
+  async function updateProductImage(productId: number, imageUrl: string, imagePublicId: string): Promise<Product> {
+    const updated = await repository.updateProductImage(productId, imageUrl, imagePublicId);
+
+    if (!updated) {
+      throw storeError.create('NOT_FOUND', 'store.productNotFound', 404);
+    }
+
+    return updated;
+  }
+
+  async function clearProductImage(productId: number): Promise<Product> {
+    const updated = await repository.clearProductImage(productId);
+
+    if (!updated) {
+      throw storeError.create('NOT_FOUND', 'store.productNotFound', 404);
+    }
+
+    return updated;
+  }
+
+  // ===================== Supplier Methods =====================
+
   async function listSuppliers(): Promise<Supplier[]> {
     return repository.listSuppliers();
   }
 
   async function createSupplier(input: BodyInput): Promise<Supplier> {
-    return repository.createSupplier(normalizeSupplierInput(input));
+    return repository.createSupplier(parseSupplierInput(input));
   }
 
   async function getSupplierById(supplierId: number): Promise<Supplier> {
@@ -364,12 +293,14 @@ export function createStoreAdminService({ repository }: StoreAdminServiceDepende
     }
   }
 
+  // ===================== Delivery Methods =====================
+
   async function listDeliveries(): Promise<Delivery[]> {
     return repository.listDeliveries();
   }
 
   async function createDelivery(input: BodyInput): Promise<number> {
-    return repository.createDelivery(normalizeDeliveryInput(input));
+    return repository.createDelivery(parseDeliveryInput(input));
   }
 
   async function getDeliveryById(deliveryId: number) {
@@ -381,6 +312,8 @@ export function createStoreAdminService({ repository }: StoreAdminServiceDepende
 
     return details;
   }
+
+  // ===================== Admin Order Methods =====================
 
   async function listOrders(filters: OrdersListFilters): Promise<AdminOrderListItem[]> {
     return repository.listOrders(filters);
@@ -397,11 +330,11 @@ export function createStoreAdminService({ repository }: StoreAdminServiceDepende
   }
 
   async function createShipment(orderId: number, input: BodyInput): Promise<number> {
-    return repository.createShipment(orderId, normalizeShipmentInput(input));
+    return repository.createShipment(orderId, parseShipmentInput(input));
   }
 
   async function updateShipment(orderId: number, input: BodyInput): Promise<void> {
-    const updated = await repository.updateShipment(orderId, normalizeShipmentInput(input));
+    const updated = await repository.updateShipment(orderId, parseShipmentInput(input));
 
     if (!updated) {
       throw storeError.create('NOT_FOUND', 'store.shipmentNotFound', 404);
@@ -409,18 +342,20 @@ export function createStoreAdminService({ repository }: StoreAdminServiceDepende
   }
 
   async function registerPayment(orderId: number, input: BodyInput): Promise<number> {
-    return repository.registerPayment(orderId, normalizePaymentInput(input));
+    return repository.registerPayment(orderId, parsePaymentInput(input));
   }
 
-  async function getSoldProductsByDate(date: string): Promise<SoldProductReportRow[]> {
-    readDate(date);
+  // ===================== Report Methods =====================
 
-    return repository.getSoldProductsByDate(date);
+  async function getSoldProductsByDate(date: string): Promise<SoldProductReportRow[]> {
+    const normalizedDate = parseReportDate(date);
+
+    return repository.getSoldProductsByDate(normalizedDate);
   }
 
   async function getTopCategoriesByPeriod(dateFrom: string, dateTo: string): Promise<TopCategoryReportRow[]> {
-    const normalizedDateFrom = readDate(dateFrom);
-    const normalizedDateTo = readDate(dateTo);
+    const normalizedDateFrom = parseReportDate(dateFrom);
+    const normalizedDateTo = parseReportDate(dateTo);
 
     if (normalizedDateFrom > normalizedDateTo) {
       throw storeError.create('VALIDATION_ERROR', 'store.validation.dateRangeInvalid', 400);
@@ -442,10 +377,12 @@ export function createStoreAdminService({ repository }: StoreAdminServiceDepende
     deleteCategory,
     deleteProduct,
     deleteSupplier,
+    clearProductImage,
     getAdminSummary,
     getCategoryById,
     getDeliveryById,
     getOrderDetails,
+    getProductImageMeta,
     getProductById,
     getSoldProductsByDate,
     getSupplierById,
@@ -457,12 +394,14 @@ export function createStoreAdminService({ repository }: StoreAdminServiceDepende
     listSuppliers,
     registerPayment,
     updateCategory,
+    updateProductImage,
     updateProduct,
     updateShipment,
     updateSupplier,
   };
 }
 
-// ===================== EXPORTS =====================
+// ===================== Exports =====================
+
 export type StoreAdminService = ReturnType<typeof createStoreAdminService>;
 export type { StoreError };

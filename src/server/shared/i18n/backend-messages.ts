@@ -18,12 +18,30 @@ export type BackendMessageKey =
   | 'auth.sessionNotActive'
   | 'store.categoryDeleteConflict'
   | 'store.categoryNotFound'
+  | 'store.customerRequired'
   | 'store.deliveryCreateFailed'
   | 'store.deliveryNotFound'
   | 'store.forbidden'
+  | 'store.insufficientStock'
+  | 'store.orderAccessForbidden'
+  | 'store.orderCreateFailed'
+  | 'store.orderItemInvalid'
+  | 'store.orderItemsRequired'
+  | 'store.orderAlreadyCancelled'
+  | 'store.orderPaidCannotCancel'
+  | 'store.orderCancelledCannotPay'
   | 'store.orderNotFound'
   | 'store.paymentAlreadyExists'
+  | 'store.paymentMethodMissing'
+  | 'store.paymentMethodInvalid'
   | 'store.paymentRegisterFailed'
+  | 'store.productImageConfigMissing'
+  | 'store.productImageFileMissing'
+  | 'store.productImageDeleteFailed'
+  | 'store.productImageMultipartExpected'
+  | 'store.productImageTooLarge'
+  | 'store.productImageUnsupportedFormat'
+  | 'store.productImageUploadFailed'
   | 'store.productDeleteConflict'
   | 'store.productNotFound'
   | 'store.requestBodyInvalid'
@@ -66,12 +84,30 @@ const messages: Record<BackendLocale, Partial<Record<BackendMessageKey, string>>
     'auth.sessionNotActive': 'Session is not active',
     'store.categoryDeleteConflict': 'Category cannot be deleted because related products exist',
     'store.categoryNotFound': 'Category was not found',
+    'store.customerRequired': 'Customer profile is required',
     'store.deliveryCreateFailed': 'Delivery could not be created',
     'store.deliveryNotFound': 'Delivery was not found',
     'store.forbidden': 'Access denied',
+    'store.insufficientStock': 'Not enough stock for one or more products',
+    'store.orderAccessForbidden': 'You do not have access to this order',
+    'store.orderCreateFailed': 'Order could not be created',
+    'store.orderItemInvalid': 'Each order item must be an object',
+    'store.orderItemsRequired': 'Order must contain at least one item',
+    'store.orderAlreadyCancelled': 'Order is already cancelled',
+    'store.orderPaidCannotCancel': 'Cannot cancel a paid order',
+    'store.orderCancelledCannotPay': 'Cannot pay a cancelled order',
     'store.orderNotFound': 'Order was not found',
     'store.paymentAlreadyExists': 'Payment for this order already exists',
+    'store.paymentMethodMissing': 'Payment method is not set for this order',
+    'store.paymentMethodInvalid': 'Payment method must be card, iban, or cash_on_delivery',
     'store.paymentRegisterFailed': 'Payment could not be registered',
+    'store.productImageConfigMissing': 'Cloudinary image upload is not configured',
+    'store.productImageFileMissing': 'Product image file field "file" is required',
+    'store.productImageDeleteFailed': 'Product image could not be removed',
+    'store.productImageMultipartExpected': 'Expected multipart/form-data request with file field "file"',
+    'store.productImageTooLarge': 'Product image file is too large (max 5 MB)',
+    'store.productImageUnsupportedFormat': 'Product image must be JPEG, PNG, or WEBP',
+    'store.productImageUploadFailed': 'Product image could not be uploaded',
     'store.productDeleteConflict': 'Product cannot be deleted because related records exist',
     'store.productNotFound': 'Product was not found',
     'store.requestBodyInvalid': 'Request body must be valid JSON',
@@ -109,12 +145,30 @@ const messages: Record<BackendLocale, Partial<Record<BackendMessageKey, string>>
     'auth.sessionNotActive': 'Сесія неактивна',
     'store.categoryDeleteConflict': "Категорію неможливо видалити через пов'язані товари",
     'store.categoryNotFound': 'Категорію не знайдено',
+    'store.customerRequired': 'Потрібен профіль клієнта',
     'store.deliveryCreateFailed': 'Поставку не вдалося створити',
     'store.deliveryNotFound': 'Поставку не знайдено',
     'store.forbidden': 'Доступ заборонено',
+    'store.insufficientStock': 'Недостатньо товару на складі для однієї або кількох позицій',
+    'store.orderAccessForbidden': 'У вас немає доступу до цього замовлення',
+    'store.orderCreateFailed': 'Замовлення не вдалося створити',
+    'store.orderItemInvalid': "Кожна позиція замовлення має бути об'єктом",
+    'store.orderItemsRequired': 'Замовлення має містити щонайменше одну позицію',
+    'store.orderAlreadyCancelled': 'Замовлення вже скасовано',
+    'store.orderPaidCannotCancel': 'Неможливо скасувати оплачене замовлення',
+    'store.orderCancelledCannotPay': 'Неможливо оплатити скасоване замовлення',
     'store.orderNotFound': 'Замовлення не знайдено',
     'store.paymentAlreadyExists': 'Оплата для цього замовлення вже існує',
+    'store.paymentMethodMissing': 'Для цього замовлення не вказано метод оплати',
+    'store.paymentMethodInvalid': 'Метод оплати має бути card, iban або cash_on_delivery',
     'store.paymentRegisterFailed': 'Оплату не вдалося зареєструвати',
+    'store.productImageConfigMissing': 'Cloudinary для завантаження зображень не налаштовано',
+    'store.productImageFileMissing': 'Потрібне поле файлу зображення "file"',
+    'store.productImageDeleteFailed': 'Не вдалося видалити зображення товару',
+    'store.productImageMultipartExpected': 'Очікується запит multipart/form-data з полем файлу "file"',
+    'store.productImageTooLarge': 'Файл зображення завеликий (максимум 5 МБ)',
+    'store.productImageUnsupportedFormat': 'Зображення товару має бути у форматі JPEG, PNG або WEBP',
+    'store.productImageUploadFailed': 'Не вдалося завантажити зображення товару',
     'store.productDeleteConflict': "Товар неможливо видалити через пов'язані записи",
     'store.productNotFound': 'Товар не знайдено',
     'store.requestBodyInvalid': 'Тіло запиту має бути валідним JSON',

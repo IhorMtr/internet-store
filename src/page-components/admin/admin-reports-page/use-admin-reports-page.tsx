@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useAdminSoldProductsByDateQuery, useAdminTopCategoriesByPeriodQuery } from '@/domains/admin/model/hooks';
 import type { SoldProductReportRow, TopCategoryReportRow } from '@/domains/admin/model/types';
 import { formatCurrency } from '@/domains/admin/lib/admin-utils';
+import type { TabsOption } from '@/shared/ui/tabs';
 
 // ========== Types ==========
 
@@ -17,6 +18,8 @@ type TopCategoriesReportFormValues = {
   dateFrom: string;
   dateTo: string;
 };
+
+type AdminReportTab = 'soldProducts' | 'topCategories';
 
 // ========== Constants ==========
 
@@ -37,6 +40,7 @@ export function useAdminReportsPage() {
   const [soldDateSubmitted, setSoldDateSubmitted] = useState(todayIso);
   const [dateFromSubmitted, setDateFromSubmitted] = useState(firstDayOfMonthIso);
   const [dateToSubmitted, setDateToSubmitted] = useState(todayIso);
+  const [activeReport, setActiveReport] = useState<AdminReportTab>('soldProducts');
 
   // ========== Queries ==========
 
@@ -51,10 +55,17 @@ export function useAdminReportsPage() {
 
   // This hook is read-only and only updates local filter state.
 
-  // ========== Derived Data ==========
+  // ========== Derived Values ==========
 
   const soldRows = soldProductsQuery.data?.data.rows ?? [];
   const topRows = topCategoriesQuery.data?.data.rows ?? [];
+  const reportTabs = useMemo<Array<TabsOption<AdminReportTab>>>(
+    () => [
+      { label: t('tabs.soldProducts'), value: 'soldProducts' },
+      { label: t('tabs.topCategories'), value: 'topCategories' },
+    ],
+    [t]
+  );
 
   // ========== Table Columns ==========
 
@@ -115,10 +126,13 @@ export function useAdminReportsPage() {
     setDateToSubmitted(values.dateTo);
   }
 
-  // ========== Return ==========
+  // ========== Return Values ==========
 
   return {
     t,
+    activeReport,
+    setActiveReport,
+    reportTabs,
     soldRows,
     topRows,
     soldProductsColumns,
@@ -130,7 +144,7 @@ export function useAdminReportsPage() {
     },
     submitSoldProductsForm,
     submitTopCategoriesForm,
-    isSoldProductsLoading: soldProductsQuery.isLoading,
-    isTopCategoriesLoading: topCategoriesQuery.isLoading,
+    isSoldProductsLoading: soldProductsQuery.isLoading || soldProductsQuery.isFetching,
+    isTopCategoriesLoading: topCategoriesQuery.isLoading || topCategoriesQuery.isFetching,
   };
 }

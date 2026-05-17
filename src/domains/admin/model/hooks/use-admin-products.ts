@@ -56,3 +56,32 @@ export function useDeleteProductMutation() {
     },
   });
 }
+
+export function useUploadProductImageMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ productId, file }: { productId: number; file: File }) =>
+      adminApi.uploadProductImage(productId, file),
+    onSuccess(_response, variables) {
+      void queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
+      void queryClient.invalidateQueries({ queryKey: adminQueryKeys.product(variables.productId) });
+      void queryClient.invalidateQueries({ queryKey: ['store', 'products'] });
+      void queryClient.invalidateQueries({ queryKey: ['store', 'orders'] });
+    },
+  });
+}
+
+export function useDeleteProductImageMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (productId: number) => adminApi.deleteProductImage(productId),
+    onSuccess(_response, productId) {
+      void queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
+      void queryClient.invalidateQueries({ queryKey: adminQueryKeys.product(productId) });
+      void queryClient.invalidateQueries({ queryKey: ['store', 'products'] });
+      void queryClient.invalidateQueries({ queryKey: ['store', 'orders'] });
+    },
+  });
+}

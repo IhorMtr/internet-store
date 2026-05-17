@@ -16,6 +16,7 @@ type TopCategoriesReportFormValues = {
 
 type AdminTopCategoriesReportFormProps = {
   initialValues: TopCategoriesReportFormValues;
+  isSubmitting: boolean;
   onSubmit: (values: TopCategoriesReportFormValues) => Promise<void>;
 };
 
@@ -27,7 +28,7 @@ function isFieldInvalid(error: unknown, isTouched: unknown, submitCount: number)
 
 // ========== Component ==========
 
-export function AdminTopCategoriesReportForm({ initialValues, onSubmit }: AdminTopCategoriesReportFormProps) {
+export function AdminTopCategoriesReportForm({ initialValues, isSubmitting, onSubmit }: AdminTopCategoriesReportFormProps) {
   // ========== Translations ==========
 
   const t = useTranslations('AdminReports');
@@ -56,8 +57,13 @@ export function AdminTopCategoriesReportForm({ initialValues, onSubmit }: AdminT
         const dateToInvalid = isFieldInvalid(errors.dateTo, touched.dateTo, submitCount);
 
         return (
-          <Form className="grid gap-3 md:grid-cols-3 md:items-end">
-            <FormField label={t('topCategories.dateFromLabel')} required error={dateFromInvalid}>
+          <Form className="flex flex-wrap items-end gap-3">
+            <FormField
+              className="w-full sm:w-64"
+              label={t('topCategories.dateFromLabel')}
+              required
+              error={dateFromInvalid}
+            >
               <DatePicker
                 value={values.dateFrom}
                 onChange={value => {
@@ -69,7 +75,12 @@ export function AdminTopCategoriesReportForm({ initialValues, onSubmit }: AdminT
               />
             </FormField>
 
-            <FormField label={t('topCategories.dateToLabel')} required error={dateToInvalid}>
+            <FormField
+              className="w-full sm:w-64"
+              label={t('topCategories.dateToLabel')}
+              required
+              error={dateToInvalid}
+            >
               <DatePicker
                 value={values.dateTo}
                 onChange={value => {
@@ -81,7 +92,9 @@ export function AdminTopCategoriesReportForm({ initialValues, onSubmit }: AdminT
               />
             </FormField>
 
-            <Button type="submit">{t('topCategories.applyButton')}</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? t('topCategories.generating') : t('topCategories.applyButton')}
+            </Button>
           </Form>
         );
       }}

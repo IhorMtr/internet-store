@@ -4,6 +4,10 @@
       "language": "Language",
       "ukrainian": "Ukrainian",
       "english": "English"
+    },
+    "errors": {
+      "network": "Network error. Please check your connection.",
+      "unexpected": "Unexpected error"
     }
   },
   "header": {
@@ -11,6 +15,10 @@
     "menu": "Menu",
     "adminPanel": "Admin panel",
     "settings": "Settings",
+    "store": "Store",
+    "catalog": "Catalog",
+    "cart": "Cart ({count})",
+    "orders": "My orders",
     "language": "Language",
     "theme": "Theme",
     "signOut": "Sign out",
@@ -21,6 +29,241 @@
   "themeSwitcher": {
     "light": "Light",
     "dark": "Dark"
+  },
+  "Home": {
+    "title": "Home",
+    "subtitle": "Choose where to continue.",
+    "links": {
+      "catalog": "Catalog",
+      "cart": "Cart",
+      "orders": "My orders",
+      "admin": "Admin panel"
+    }
+  },
+  "Store": {
+    "stockIssues": {
+      "title": "Not enough stock",
+      "inCart": "In cart: {requested}",
+      "available": "Available: {available}",
+      "productUnavailable": "Product is no longer available",
+      "syncCart": "Update cart",
+      "backToCart": "Back to cart"
+    },
+    "statuses": {
+      "order": {
+        "CREATED": "Created",
+        "PENDING": "Pending",
+        "PROCESSING": "Preparing",
+        "PAID": "Paid",
+        "CANCELLED": "Cancelled",
+        "FAILED": "Failed",
+        "UNKNOWN": "Unknown"
+      },
+      "shipment": {
+        "CREATED": "Created",
+        "PREPARING": "Preparing",
+        "PROCESSING": "Preparing",
+        "IN_TRANSIT": "In transit",
+        "DELIVERED": "Delivered",
+        "CANCELLED": "Cancelled",
+        "FAILED": "Failed",
+        "UNKNOWN": "Unknown"
+      },
+      "payment": {
+        "CREATED": "Created",
+        "PENDING": "Pending",
+        "PROCESSING": "Preparing",
+        "PAID": "Paid",
+        "CANCELLED": "Cancelled",
+        "FAILED": "Failed",
+        "UNKNOWN": "Unknown"
+      }
+    }
+  },
+  "PaymentMethods": {
+    "card": "Card",
+    "iban": "IBAN",
+    "cash_on_delivery": "Cash on delivery",
+    "unknown": "Unknown"
+  },
+  "StorefrontAccess": {
+    "loading": "Checking access...",
+    "forbiddenTitle": "Storefront is available for customers only",
+    "forbiddenDescription": "Use the admin panel to manage products, orders, and reports.",
+    "goToAdmin": "Go to admin panel"
+  },
+  "Catalog": {
+    "title": "Catalog",
+    "subtitle": "Browse available products and add them to your cart.",
+    "loading": "Loading products...",
+    "empty": "No products found.",
+    "cartLink": "Cart ({count})",
+    "filters": {
+      "searchLabel": "Search",
+      "searchPlaceholder": "Type product name",
+      "categoryLabel": "Category",
+      "allCategories": "All categories"
+    },
+    "card": {
+      "unknownCategory": "Category",
+      "discount": "-{discount}%",
+      "stock": "Stock: {stock}",
+      "inCart": "In cart: {quantity}",
+      "noImage": "No image",
+      "details": "Details",
+      "addToCart": "Add to cart",
+      "outOfStock": "Out of stock"
+    }
+  },
+  "ProductDetails": {
+    "loading": "Loading product...",
+    "notFound": "Product was not found.",
+    "backToCatalog": "Back to catalog",
+    "unknownCategory": "Category",
+    "discount": "-{discount}%",
+    "noImage": "No image",
+    "noDescription": "No description.",
+    "stock": "Stock: {stock}",
+    "inCart": "In cart: {quantity}",
+    "quantity": "Quantity",
+    "addToCart": "Add to cart",
+    "outOfStock": "Out of stock"
+  },
+  "Cart": {
+    "title": "Cart",
+    "subtitle": "Review items before checkout.",
+    "empty": "Your cart is empty.",
+    "goToCatalog": "Go to catalog",
+    "checkout": "Checkout",
+    "checkoutDisabledStockIssues": "Resolve stock issues before checkout.",
+    "clear": "Clear cart",
+    "summary": {
+      "title": "Summary",
+      "items": "Items",
+      "subtotal": "Subtotal",
+      "total": "Total"
+    },
+    "item": {
+      "stock": "Stock: {stock}",
+      "noImage": "No image",
+      "quantity": "Quantity",
+      "increment": "Increase quantity",
+      "decrement": "Decrease quantity",
+      "remove": "Remove item"
+    }
+  },
+  "Checkout": {
+    "title": "Checkout",
+    "subtitle": "Create an order from your cart.",
+    "empty": "Your cart is empty.",
+    "goToCatalog": "Go to catalog",
+    "form": {
+      "title": "Shipping",
+      "shippingSectionTitle": "Shipping",
+      "shippingServiceLabel": "Delivery service",
+      "shippingServicePlaceholder": "Select delivery service",
+      "shippingServiceOptions": {
+        "novaPoshta": "Nova Poshta",
+        "ukrposhta": "Ukrposhta",
+        "meest": "Meest"
+      },
+      "shippingAddressLabel": "Shipping address",
+      "shippingAddressPlaceholder": "City, branch, street",
+      "paymentSectionTitle": "Payment",
+      "paymentMethodLabel": "Payment method",
+      "paymentMethodPlaceholder": "Select payment method",
+      "submit": "Create order",
+      "submitting": "Creating..."
+    },
+    "summary": {
+      "title": "Order summary",
+      "items": "Items",
+      "noImage": "No image",
+      "total": "Total"
+    },
+    "validation": {
+      "shippingServiceRequired": "Shipping service is required",
+      "shippingAddressRequired": "Shipping address is required",
+      "paymentMethodRequired": "Payment method is required"
+    }
+  },
+  "Orders": {
+    "title": "My orders",
+    "subtitle": "Track your orders, payment and shipping.",
+    "goToCatalog": "Catalog",
+    "actions": {
+      "open": "Open"
+    },
+    "table": {
+      "id": "Order",
+      "date": "Date",
+      "status": "Order status",
+      "total": "Total",
+      "paymentMethod": "Payment method",
+      "paymentStatus": "Payment",
+      "shippingStatus": "Shipping",
+      "actions": "Actions",
+      "loading": "Loading orders...",
+      "empty": "No orders found."
+    }
+  },
+  "OrderDetails": {
+    "title": "Order #{orderId}",
+    "subtitle": "Review items, shipment and payment.",
+    "loading": "Loading order...",
+    "notFound": "Order was not found.",
+    "backToOrders": "Back to orders",
+    "meta": {
+      "date": "Order date",
+      "total": "Total",
+      "orderStatus": "Order status",
+      "paymentStatus": "Payment status",
+      "shippingStatus": "Shipping status",
+      "paymentDate": "Payment date"
+    },
+    "itemsTable": {
+      "product": "Product",
+      "noImage": "No image",
+      "quantity": "Quantity",
+      "salePrice": "Sale price",
+      "discount": "Discount",
+      "lineAmount": "Line amount",
+      "loading": "Loading items...",
+      "empty": "No order items found."
+    },
+    "shipment": {
+      "title": "Shipment",
+      "service": "Shipping service",
+      "address": "Shipping address",
+      "trackingNumber": "Tracking number",
+      "trackingNumberNotProvided": "Not provided"
+    },
+    "payment": {
+      "title": "Payment",
+      "paid": "Payment is registered.",
+      "unpaid": "Unpaid.",
+      "cancelledInfo": "Order cancelled.",
+      "methodLabel": "Payment method",
+      "dateLabel": "Payment date",
+      "methodPlaceholder": "Select payment method",
+      "submit": "Pay order",
+      "submitting": "Paying...",
+      "actions": {
+        "pay": "Pay order",
+        "paying": "Paying...",
+        "cancel": "Cancel order",
+        "cancelling": "Cancelling..."
+      },
+      "validation": {
+        "paymentMethodRequired": "Payment method is required"
+      }
+    },
+    "cancelDialog": {
+      "title": "Cancel order",
+      "description": "Are you sure you want to cancel this order? Items will be returned to stock.",
+      "confirm": "Refuse",
+      "cancel": "Back"
+    }
   },
   "auth": {
     "login": {
@@ -207,6 +450,19 @@
       "discountLabel": "Discount (%)",
       "descriptionLabel": "Description",
       "descriptionPlaceholder": "Product description",
+      "image": {
+        "label": "Product image",
+        "uploadButton": "Upload image",
+        "replaceButton": "Replace image",
+        "removeButton": "Remove image",
+        "removing": "Removing...",
+        "noImage": "No image",
+        "selectedFile": "Selected file",
+        "clearSelectedButton": "Clear selection",
+        "hint": "Supported formats: JPEG, PNG, WEBP. Max size: 5 MB.",
+        "unsupportedFormat": "Unsupported file format",
+        "fileTooLarge": "File is too large"
+      },
       "createButton": "Create",
       "updateButton": "Save changes",
       "cancelButton": "Cancel",
@@ -225,12 +481,14 @@
       "descriptionTooLong": "Description must not exceed 2000 characters"
     },
     "table": {
+      "image": "Image",
       "id": "ID",
       "name": "Name",
       "categoryId": "Category ID",
       "price": "Price",
       "stock": "Stock",
       "discount": "Discount",
+      "noImage": "No image",
       "actions": "Actions",
       "loading": "Loading products...",
       "empty": "No products found."
@@ -387,6 +645,7 @@
       "orderStatus": "Order status",
       "shippingStatus": "Shipping status",
       "paymentStatus": "Payment status",
+      "paymentMethod": "Payment method",
       "paymentDate": "Payment date"
     },
     "itemsTable": {
@@ -430,7 +689,7 @@
     "paymentForm": {
       "title": "Payment",
       "methodLabel": "Payment method",
-      "methodPlaceholder": "card",
+      "methodPlaceholder": "Select payment method",
       "submitButton": "Register payment",
       "submitting": "Registering...",
       "validation": {
@@ -441,9 +700,16 @@
   "AdminReports": {
     "title": "Reports",
     "subtitle": "Analyze sales and category performance.",
+    "tabs": {
+      "soldProducts": "Sold products",
+      "topCategories": "Top categories"
+    },
     "soldProducts": {
+      "title": "Sold products",
+      "description": "Shows products sold on the selected date, including quantity and sales amount.",
       "dateLabel": "Date",
-      "applyButton": "Run report",
+      "applyButton": "Generate",
+      "generating": "Generating...",
       "validation": {
         "dateRequired": "Date is required"
       },
@@ -457,9 +723,12 @@
       }
     },
     "topCategories": {
+      "title": "Top categories",
+      "description": "Shows categories with the highest sales for the selected period.",
       "dateFromLabel": "Date from",
       "dateToLabel": "Date to",
-      "applyButton": "Run report",
+      "applyButton": "Generate",
+      "generating": "Generating...",
       "validation": {
         "dateFromRequired": "Start date is required",
         "dateToRequired": "End date is required",

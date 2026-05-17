@@ -1,4 +1,3 @@
-import { apiAuthHeader } from '@/shared/api/auth-header';
 import { apiClient } from '@/shared/api/client';
 import { useAuthSessionStore } from '@/domains/auth/model/stores/auth-session-store';
 import type { LoginRequest, RegisterRequest } from '@/domains/auth/model/types/auth.interfaces';
@@ -13,9 +12,8 @@ import type {
 
 let refreshRequest: Promise<RefreshResponse> | null = null;
 
-function applyAccessToken(accessToken: string): void {
-  useAuthSessionStore.getState().setAccessToken(accessToken);
-  apiAuthHeader.setAccessToken(apiClient, accessToken);
+function applySession(accessToken: string, user: RefreshResponse['data']['user']): void {
+  useAuthSessionStore.getState().setSession({ accessToken, user });
 }
 
 // ===================== REQUESTS =====================
@@ -24,7 +22,7 @@ export const authApi = {
   async register(payload: RegisterRequest): Promise<RegisterResponse> {
     const response = await apiClient.post<RegisterResponse>('/auth/register', payload);
 
-    applyAccessToken(response.data.data.accessToken);
+    applySession(response.data.data.accessToken, response.data.data.user);
 
     return response.data;
   },
@@ -32,7 +30,7 @@ export const authApi = {
   async login(payload: LoginRequest): Promise<LoginResponse> {
     const response = await apiClient.post<LoginResponse>('/auth/login', payload);
 
-    applyAccessToken(response.data.data.accessToken);
+    applySession(response.data.data.accessToken, response.data.data.user);
 
     return response.data;
   },
@@ -41,7 +39,7 @@ export const authApi = {
     refreshRequest ??= apiClient
       .post<RefreshResponse>('/auth/refresh')
       .then(response => {
-        applyAccessToken(response.data.data.accessToken);
+        applySession(response.data.data.accessToken, response.data.data.user);
 
         return response.data;
       })
@@ -58,8 +56,7 @@ export const authApi = {
 
       return response.data;
     } finally {
-      useAuthSessionStore.getState().setAccessToken(null);
-      apiAuthHeader.clear(apiClient);
+      useAuthSessionStore.getState().clearSession();
     }
   },
 };

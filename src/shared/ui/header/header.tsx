@@ -16,7 +16,7 @@ export function Header() {
   const t = useTranslations('header');
   const logoutMutation = useLogoutMutation();
   const userRoleName = useAuthSessionStore(state => state.user?.roleName);
-  const setUnauthenticated = useAuthSessionStore(state => state.setUnauthenticated);
+  const clearSession = useAuthSessionStore(state => state.clearSession);
   const cartItemsCount = useCartStore(cartSelectors.itemsCount);
 
   // ========== HANDLERS ==========
@@ -24,7 +24,7 @@ export function Header() {
   function handleLogout() {
     logoutMutation.mutate(undefined, {
       onSettled() {
-        setUnauthenticated();
+        clearSession();
         router.replace('/auth/login');
       },
     });

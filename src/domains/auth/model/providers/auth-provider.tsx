@@ -1,13 +1,11 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, type ReactNode } from 'react';
 import { authApi } from '@/domains/auth/api/auth.api';
 import { useAuthSessionStore } from '@/domains/auth/model/stores/auth-session-store';
-import { apiAuthHeader } from '@/shared/api/auth-header';
-import { apiClient } from '@/shared/api/client';
+import { useRouter } from '@/i18n/navigation';
 
 // ===================== TYPES =====================
 type AuthProviderProps = {
@@ -17,26 +15,21 @@ type AuthProviderProps = {
 // ===================== CONSTANTS =====================
 const ACCESS_TOKEN_REFRESH_INTERVAL_MS = 1000 * 60 * 14;
 
-// ===================== HELPERS =====================
-function getLoginPath(locale: string): string {
-  return `/${locale}/auth/login`;
-}
-
 // ===================== COMPONENT =====================
 
 export function AuthProvider({ children }: AuthProviderProps) {
   // ===================== HOOKS =====================
 
-  const locale = useLocale();
   const t = useTranslations('StorefrontAccess');
   const router = useRouter();
 
   // ===================== STORE =====================
 
-  const status = useAuthSessionStore(state => state.status);
-  const setAuthenticated = useAuthSessionStore(state => state.setAuthenticated);
-  const setChecking = useAuthSessionStore(state => state.setChecking);
-  const setUnauthenticated = useAuthSessionStore(state => state.setUnauthenticated);
+  const user = useAuthSessionStore(state => state.user);
+  const isInitialized = useAuthSessionStore(state => state.isInitialized);
+  const setSession = useAuthSessionStore(state => state.setSession);
+  const clearSession = useAuthSessionStore(state => state.clearSession);
+  const setInitialized = useAuthSessionStore(state => state.setInitialized);
 
   // ===================== STATE =====================
 
@@ -51,19 +44,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
       suppressToast: true,
     },
     onSuccess(response) {
-      setAuthenticated(response.data.user);
+      setSession({
+        accessToken: response.data.accessToken,
+        user: response.data.user,
+      });
+      setInitialized(true);
     },
     onError() {
-      apiAuthHeader.clear(apiClient);
-      setUnauthenticated();
-      router.replace(getLoginPath(locale));
+      clearSession();
+      setInitialized(true);
+      router.replace('/auth/login');
     },
   });
 
   // ===================== EFFECTS =====================
 
   useEffect(() => {
-    if (status !== 'checking') {
+    if (isInitialized) {
       return;
     }
 
@@ -72,12 +69,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
 
     didInitialRefresh.current = true;
-    setChecking();
     refresh();
-  }, [refresh, setChecking, status]);
+  }, [isInitialized, refresh]);
 
   useEffect(() => {
-    if (status !== 'authenticated') {
+    if (!user) {
       return;
     }
 
@@ -86,11 +82,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }, ACCESS_TOKEN_REFRESH_INTERVAL_MS);
 
     return () => window.clearInterval(intervalId);
-  }, [refresh, status]);
+  }, [refresh, user]);
 
   // ===================== RENDER =====================
 
-  if (status === 'checking') {
+  if (!isInitialized) {
     return (
       <div className="flex min-h-full items-center justify-center bg-canvas px-4 text-primary">
         <div className="rounded-md border bg-surface px-4 py-3 text-body text-muted shadow-soft">{t('loading')}</div>
@@ -98,7 +94,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     );
   }
 
-  if (status === 'unauthenticated') {
+  if (!user) {
     return null;
   }
 

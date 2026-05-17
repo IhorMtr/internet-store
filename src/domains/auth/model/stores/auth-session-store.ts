@@ -1,85 +1,43 @@
 'use client';
 
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
 import type { AuthUser } from '@/domains/auth/model/types/auth.types';
 
 // ===================== TYPES =====================
-type AuthSessionStatus = 'checking' | 'authenticated' | 'unauthenticated';
-
 type AuthSessionState = {
-  status: AuthSessionStatus;
-  user: AuthUser | null;
   accessToken: string | null;
-  setAuthenticated(user: AuthUser, accessToken?: string | null): void;
-  setSession(user: AuthUser, accessToken: string): void;
-  setAccessToken(accessToken: string | null): void;
+  user: AuthUser | null;
+  isInitialized: boolean;
+  setSession(session: { accessToken: string; user: AuthUser }): void;
   clearSession(): void;
-  setChecking(): void;
-  setUnauthenticated(): void;
+  setInitialized(value: boolean): void;
 };
 
-const AUTH_SESSION_STORAGE_KEY = 'shopcore-auth-session';
-
 // ===================== STORE =====================
+export const useAuthSessionStore = create<AuthSessionState>()(set => ({
+  // ===================== INITIAL STATE =====================
 
-export const useAuthSessionStore = create<AuthSessionState>()(
-  persist(
-    (set, get) => ({
-      // ===================== INITIAL STATE =====================
+  accessToken: null,
+  user: null,
+  isInitialized: false,
 
-      status: 'checking',
-      user: null,
+  // ===================== ACTIONS =====================
+
+  setSession(session) {
+    set({
+      accessToken: session.accessToken,
+      user: session.user,
+    });
+  },
+
+  clearSession() {
+    set({
       accessToken: null,
+      user: null,
+    });
+  },
 
-      // ===================== ACTIONS =====================
-
-      setAuthenticated(user, accessToken) {
-        set(state => ({
-          status: 'authenticated',
-          user,
-          accessToken: accessToken ?? state.accessToken,
-        }));
-      },
-
-      setSession(user, accessToken) {
-        set({
-          status: 'authenticated',
-          user,
-          accessToken,
-        });
-      },
-
-      setAccessToken(accessToken) {
-        set({ accessToken });
-      },
-
-      clearSession() {
-        set({
-          status: 'unauthenticated',
-          user: null,
-          accessToken: null,
-        });
-      },
-
-      setChecking() {
-        set({
-          status: 'checking',
-          user: null,
-        });
-      },
-
-      setUnauthenticated() {
-        get().clearSession();
-      },
-    }),
-    {
-      name: AUTH_SESSION_STORAGE_KEY,
-      storage: createJSONStorage(() => localStorage),
-      partialize: state => ({
-        user: state.user,
-        accessToken: state.accessToken,
-      }),
-    }
-  )
-);
+  setInitialized(value) {
+    set({ isInitialized: value });
+  },
+}));

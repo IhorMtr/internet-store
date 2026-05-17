@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
-import { usePathname } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
+import { usePathname, useRouter } from '@/i18n/navigation';
 import { useAuthSessionStore } from '@/domains/auth/model/stores/auth-session-store';
 
 // ========== Types ==========
@@ -30,21 +29,20 @@ const navigationItems: AdminNavigationItem[] = [
 export function useAdminLayout() {
   // ========== Translations ==========
 
-  const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
   const t = useTranslations('Admin');
 
   // ========== State ==========
 
-  const status = useAuthSessionStore(state => state.status);
+  const isInitialized = useAuthSessionStore(state => state.isInitialized);
   const userRoleName = useAuthSessionStore(state => state.user?.roleName);
 
   // ========== Derived Data ==========
 
-  const isLoading = status === 'checking';
-  const isAllowed = status === 'authenticated' && userRoleName === 'admin';
-  const isForbidden = status === 'authenticated' && userRoleName !== 'admin';
+  const isLoading = !isInitialized;
+  const isAllowed = isInitialized && userRoleName === 'admin';
+  const isForbidden = isInitialized && userRoleName === 'user';
 
   // ========== Handlers ==========
 
@@ -53,8 +51,8 @@ export function useAdminLayout() {
       return;
     }
 
-    router.replace(`/${locale}/home`);
-  }, [isForbidden, locale, router]);
+    router.replace('/home');
+  }, [isForbidden, router]);
 
   // ========== Return ==========
 

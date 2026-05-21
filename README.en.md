@@ -181,11 +181,6 @@ npm run lint
 npm run build
 ```
 
-Note:
-
-- The project uses next/font/google (Geist).
-- In restricted network environments, build may fail due to external font fetching limits.
-
 ## Known limitations
 
 - No real payment provider integration.

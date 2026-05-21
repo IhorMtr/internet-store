@@ -1,7 +1,6 @@
 import { createPgClient } from './db/client.mjs';
-import { BASE_SCHEMA_FILE, ENV_FILE, MIGRATIONS_DIR } from './db/constants.mjs';
+import { BASE_SCHEMA_FILE, ENV_FILE } from './db/constants.mjs';
 import { loadEnvFile } from './db/env.mjs';
-import { applyMigrations } from './db/migrations.mjs';
 import { resetSchemaOrData, restartShopCoreSequences } from './db/reset.mjs';
 import { ensureResetIsAllowed } from './db/safety.mjs';
 import { seedShopCoreData } from './db/seeders/shopcore-seeder.mjs';
@@ -19,7 +18,6 @@ async function run() {
 
   try {
     await resetSchemaOrData(client, BASE_SCHEMA_FILE);
-    await applyMigrations(client, MIGRATIONS_DIR);
     await restartShopCoreSequences(client);
 
     const summary = await seedShopCoreData(client);

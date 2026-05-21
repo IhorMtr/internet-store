@@ -145,8 +145,7 @@ CLOUDINARY_FOLDER=shopcore/products
 ## Seed/reset
 
 - Local DB reset/seed entrypoint is scripts/db-reset-seed.mjs.
-- Database schema is reproducible from db-migration/schema/shopcore_base_schema.sql plus incremental SQL files in
-  db-migration/migrations.
+- Database schema is reproducible from the current baseline schema file: db-migration/schema/shopcore_base_schema.sql.
 - db:reset-seed creates only the admin auth account from SHOPCORE_ADMIN_EMAIL, SHOPCORE_ADMIN_PASSWORD,
   SHOPCORE_ADMIN_FULL_NAME.
 - Regular user auth bootstrap is intentionally not created; users can register via UI.

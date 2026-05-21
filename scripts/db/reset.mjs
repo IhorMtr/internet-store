@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import { runSqlFile } from './migrations.mjs';
+import { readFileSync } from 'node:fs';
 
 // ========== Helpers ==========
 function quoteIdentifier(identifier) {
@@ -11,18 +11,21 @@ export async function resetSchemaOrData(client, baseSchemaFilePath) {
   const hasBaseSchema = fs.existsSync(baseSchemaFilePath);
 
   if (!hasBaseSchema) {
-    console.warn(
-      '[db:reset-seed] Base schema file is not present. Full schema recreation is unavailable; ' +
-        'falling back to data reset (TRUNCATE) and migration reapply.'
+    throw new Error(
+      `[db:reset-seed] Required baseline schema file is missing: ${baseSchemaFilePath}. ` +
+        'Reset/seed now supports baseline-only flow.'
     );
-    await truncateShopCoreTables(client);
-    return;
   }
 
-  console.info('[db:reset-seed] base schema file detected and will be applied');
+  console.info('[db:reset-seed] baseline schema file detected and will be applied');
   await client.query('drop schema if exists public cascade; create schema public;');
-  await runSqlFile(client, baseSchemaFilePath);
-  await truncateShopCoreTables(client);
+  const sql = readFileSync(baseSchemaFilePath, 'utf8');
+
+  if (!sql.trim()) {
+    throw new Error(`[db:reset-seed] Baseline schema file is empty: ${baseSchemaFilePath}`);
+  }
+
+  await client.query(sql);
 }
 
 export async function truncateShopCoreTables(client) {

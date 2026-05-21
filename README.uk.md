@@ -145,7 +145,7 @@ CLOUDINARY_FOLDER=shopcore/products
 ## Seed/reset
 
 - Точка входу для локального reset/seed: scripts/db-reset-seed.mjs.
-- Схема БД відтворюється з db-migration/schema/shopcore_base_schema.sql і подальших SQL у db-migration/migrations.
+- Схема БД відтворюється з актуальної baseline-схеми: db-migration/schema/shopcore_base_schema.sql.
 - db:reset-seed створює тільки admin auth-акаунт із SHOPCORE_ADMIN_EMAIL, SHOPCORE_ADMIN_PASSWORD,
   SHOPCORE_ADMIN_FULL_NAME.
 - Звичайний user auth bootstrap навмисно не створюється; user реєструється через UI.

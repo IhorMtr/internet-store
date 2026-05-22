@@ -333,6 +333,33 @@
       "confirm": "Confirm",
       "cancel": "Cancel"
     },
+    "feedback": {
+      "categories": {
+        "createSuccess": "Category created",
+        "updateSuccess": "Category updated",
+        "deleteSuccess": "Category deleted"
+      },
+      "products": {
+        "createSuccess": "Product created",
+        "updateSuccess": "Product updated",
+        "deleteSuccess": "Product deleted",
+        "imageUploadSuccess": "Product image updated",
+        "imageDeleteSuccess": "Product image removed"
+      },
+      "suppliers": {
+        "createSuccess": "Supplier created",
+        "updateSuccess": "Supplier updated",
+        "deleteSuccess": "Supplier deleted"
+      },
+      "deliveries": {
+        "createSuccess": "Delivery created"
+      },
+      "orders": {
+        "shipmentCreateSuccess": "Shipment created",
+        "shipmentUpdateSuccess": "Shipment updated",
+        "paymentRegisterSuccess": "Payment registered"
+      }
+    },
     "statuses": {
       "order": {
         "CREATED": "Created",
@@ -484,6 +511,7 @@
       "image": "Image",
       "id": "ID",
       "name": "Name",
+      "category": "Category",
       "categoryId": "Category ID",
       "price": "Price",
       "stock": "Stock",

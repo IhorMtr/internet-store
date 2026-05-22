@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { useTranslations } from 'next-intl';
+import toast from 'react-hot-toast';
 import {
   useAdminSuppliersQuery,
   useCreateSupplierMutation,
@@ -117,11 +118,13 @@ export function useAdminSuppliersPage() {
 
     if (editingSupplier) {
       await updateMutation.mutateAsync(payload);
+      toast.success(commonT('feedback.suppliers.updateSuccess'));
       setEditingSupplier(null);
       return;
     }
 
     await createMutation.mutateAsync(payload);
+    toast.success(commonT('feedback.suppliers.createSuccess'));
   }
 
   function cancelEditing() {
@@ -134,6 +137,7 @@ export function useAdminSuppliersPage() {
     }
 
     await deleteMutation.mutateAsync(deleteTarget.supplierId);
+    toast.success(commonT('feedback.suppliers.deleteSuccess'));
 
     if (editingSupplier?.supplierId === deleteTarget.supplierId) {
       setEditingSupplier(null);

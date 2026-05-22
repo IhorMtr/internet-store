@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { useTranslations } from 'next-intl';
+import toast from 'react-hot-toast';
 import {
   useAdminCategoriesQuery,
   useCreateCategoryMutation,
@@ -106,11 +107,13 @@ export function useAdminCategoriesPage() {
 
     if (editingCategoryId) {
       await updateMutation.mutateAsync(payload);
+      toast.success(commonT('feedback.categories.updateSuccess'));
       setEditingCategoryId(null);
       return;
     }
 
     await createMutation.mutateAsync(payload);
+    toast.success(commonT('feedback.categories.createSuccess'));
   }
 
   function handleCancelEdit() {
@@ -123,6 +126,7 @@ export function useAdminCategoriesPage() {
     }
 
     await deleteMutation.mutateAsync(deleteTarget.categoryId);
+    toast.success(commonT('feedback.categories.deleteSuccess'));
 
     if (deleteTarget.categoryId === editingCategoryId) {
       setEditingCategoryId(null);

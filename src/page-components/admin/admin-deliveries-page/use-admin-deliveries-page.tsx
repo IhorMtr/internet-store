@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { useLocale, useTranslations } from 'next-intl';
+import toast from 'react-hot-toast';
 import {
   useAdminDeliveriesQuery,
   useAdminDeliveryDetailsQuery,
@@ -38,6 +39,7 @@ export function useAdminDeliveriesPage() {
 
   const locale = useLocale();
   const t = useTranslations('AdminDeliveries');
+  const commonT = useTranslations('Admin');
 
   // ========== State ==========
 
@@ -153,6 +155,7 @@ export function useAdminDeliveriesPage() {
     };
 
     await createMutation.mutateAsync(payload);
+    toast.success(commonT('feedback.deliveries.createSuccess'));
   }
 
   // ========== Return Values ==========

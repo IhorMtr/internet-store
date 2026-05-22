@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { useLocale, useTranslations } from 'next-intl';
+import toast from 'react-hot-toast';
 import {
   useAdminCategoriesQuery,
   useDeleteProductImageMutation,
@@ -160,8 +161,9 @@ export function useAdminProductsPage() {
         header: t('table.name'),
       },
       {
-        accessorKey: 'categoryId',
-        header: t('table.categoryId'),
+        accessorKey: 'categoryName',
+        header: t('table.category'),
+        cell: ({ row }) => row.original.categoryName ?? '-',
       },
       {
         accessorKey: 'price',
@@ -234,9 +236,15 @@ export function useAdminProductsPage() {
       description: values.description.trim() || null,
     };
 
-    const savedProduct = editingProduct
-      ? (await updateMutation.mutateAsync(payload)).data.product
-      : (await createMutation.mutateAsync(payload)).data.product;
+    let savedProduct: AdminProduct;
+
+    if (editingProduct) {
+      savedProduct = (await updateMutation.mutateAsync(payload)).data.product;
+      toast.success(commonT('feedback.products.updateSuccess'));
+    } else {
+      savedProduct = (await createMutation.mutateAsync(payload)).data.product;
+      toast.success(commonT('feedback.products.createSuccess'));
+    }
 
     if (selectedImageFile) {
       try {
@@ -244,6 +252,7 @@ export function useAdminProductsPage() {
           productId: savedProduct.productId,
           file: selectedImageFile,
         });
+        toast.success(commonT('feedback.products.imageUploadSuccess'));
       } catch {
         // Product save should remain successful even if image upload fails.
       }
@@ -267,6 +276,7 @@ export function useAdminProductsPage() {
     }
 
     const response = await deleteImageMutation.mutateAsync(editingProduct.productId);
+    toast.success(commonT('feedback.products.imageDeleteSuccess'));
     clearSelectedImage();
     setEditingProduct(response.data.product);
   }
@@ -277,6 +287,7 @@ export function useAdminProductsPage() {
     }
 
     await deleteMutation.mutateAsync(deleteTarget.productId);
+    toast.success(commonT('feedback.products.deleteSuccess'));
 
     if (editingProduct?.productId === deleteTarget.productId) {
       clearSelectedImage();

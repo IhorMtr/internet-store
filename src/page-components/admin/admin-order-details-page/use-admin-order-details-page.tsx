@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { useLocale, useTranslations } from 'next-intl';
+import toast from 'react-hot-toast';
 import {
   useAdminOrderDetailsQuery,
   useCreateShipmentMutation,
@@ -40,6 +41,7 @@ export function useAdminOrderDetailsPage(orderId: number) {
 
   const locale = useLocale();
   const t = useTranslations('AdminOrderDetails');
+  const commonT = useTranslations('Admin');
   const paymentMethodT = useTranslations('PaymentMethods');
 
   // ========== State ==========
@@ -123,6 +125,7 @@ export function useAdminOrderDetailsPage(orderId: number) {
     };
 
     await createShipmentMutation.mutateAsync(payload);
+    toast.success(commonT('feedback.orders.shipmentCreateSuccess'));
   }
 
   async function updateShipment(values: ShipmentFormValues) {
@@ -134,6 +137,7 @@ export function useAdminOrderDetailsPage(orderId: number) {
     };
 
     await updateShipmentMutation.mutateAsync(payload);
+    toast.success(commonT('feedback.orders.shipmentUpdateSuccess'));
   }
 
   async function submitPayment(values: PaymentFormValues) {
@@ -142,6 +146,7 @@ export function useAdminOrderDetailsPage(orderId: number) {
     };
 
     await paymentMutation.mutateAsync(payload);
+    toast.success(commonT('feedback.orders.paymentRegisterSuccess'));
   }
 
   function formatPaymentMethod(value: string | null | undefined) {

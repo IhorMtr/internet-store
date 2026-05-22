@@ -43,6 +43,7 @@ export function mapProduct(row: ProductRow): Product {
   return {
     productId: row.product_id,
     categoryId: row.category_id,
+    categoryName: row.category_name ?? null,
     name: row.name,
     price: toNumber(row.price),
     stockQuantity: row.stock_quantity,

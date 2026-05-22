@@ -20,6 +20,7 @@ export type AdminCategory = {
 export type AdminProduct = {
   productId: number;
   categoryId: number;
+  categoryName: string | null;
   name: string;
   price: number;
   stockQuantity: number;

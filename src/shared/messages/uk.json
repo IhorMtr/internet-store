@@ -333,6 +333,33 @@
       "confirm": "Підтвердити",
       "cancel": "Скасувати"
     },
+    "feedback": {
+      "categories": {
+        "createSuccess": "Категорію створено",
+        "updateSuccess": "Категорію оновлено",
+        "deleteSuccess": "Категорію видалено"
+      },
+      "products": {
+        "createSuccess": "Товар створено",
+        "updateSuccess": "Товар оновлено",
+        "deleteSuccess": "Товар видалено",
+        "imageUploadSuccess": "Зображення товару оновлено",
+        "imageDeleteSuccess": "Зображення товару видалено"
+      },
+      "suppliers": {
+        "createSuccess": "Постачальника створено",
+        "updateSuccess": "Постачальника оновлено",
+        "deleteSuccess": "Постачальника видалено"
+      },
+      "deliveries": {
+        "createSuccess": "Поставку створено"
+      },
+      "orders": {
+        "shipmentCreateSuccess": "Доставку створено",
+        "shipmentUpdateSuccess": "Доставку оновлено",
+        "paymentRegisterSuccess": "Оплату зареєстровано"
+      }
+    },
     "statuses": {
       "order": {
         "CREATED": "Створено",
@@ -484,6 +511,7 @@
       "image": "Зображення",
       "id": "ID",
       "name": "Назва",
+      "category": "Категорія",
       "categoryId": "ID категорії",
       "price": "Ціна",
       "stock": "Залишок",

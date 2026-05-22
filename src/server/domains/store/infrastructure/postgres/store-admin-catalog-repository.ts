@@ -157,6 +157,7 @@ export const postgresAdminCatalogRepository: Pick<
         select
           p.product_id,
           p.category_id,
+          c.category_name,
           p.name,
           p.price,
           p.stock_quantity,
@@ -165,6 +166,8 @@ export const postgresAdminCatalogRepository: Pick<
           p.image_url,
           p.image_public_id
         from public.products as p
+        left join public.categories as c
+          on c.category_id = p.category_id
         ${whereClause}
         order by p.name asc
       `,

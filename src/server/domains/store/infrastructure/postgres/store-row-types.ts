@@ -9,6 +9,7 @@ export type CategoryRow = {
 export type ProductRow = {
   product_id: number;
   category_id: number;
+  category_name?: string | null;
   name: string;
   price: number | string;
   stock_quantity: number;

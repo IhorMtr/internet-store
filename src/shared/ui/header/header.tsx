@@ -1,7 +1,6 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useRouter } from '@/i18n/navigation';
 import { useLogoutMutation } from '@/domains/auth/model/hooks/use-logout-mutation';
 import { useAuthSessionStore } from '@/domains/auth/model/stores/auth-session-store';
 import { cartSelectors, useCartStore } from '@/domains/store/model/stores/cart-store';
@@ -12,22 +11,15 @@ import { HeaderActionsMenu } from '@/shared/ui/header/header-actions-menu';
 export function Header() {
   // ========== Hooks ==========
 
-  const router = useRouter();
   const t = useTranslations('header');
   const logoutMutation = useLogoutMutation();
   const userRoleName = useAuthSessionStore(state => state.user?.roleName);
-  const clearSession = useAuthSessionStore(state => state.clearSession);
   const cartItemsCount = useCartStore(cartSelectors.itemsCount);
 
   // ========== HANDLERS ==========
 
   function handleLogout() {
-    logoutMutation.mutate(undefined, {
-      onSettled() {
-        clearSession();
-        router.replace('/auth/login');
-      },
-    });
+    logoutMutation.mutate();
   }
 
   // ========== Render ==========

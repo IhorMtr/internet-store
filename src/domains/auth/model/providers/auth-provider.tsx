@@ -84,6 +84,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return () => window.clearInterval(intervalId);
   }, [refresh, user]);
 
+  useEffect(() => {
+    if (!isInitialized || user) {
+      return;
+    }
+
+    router.replace('/auth/login');
+  }, [isInitialized, router, user]);
+
   // ===================== RENDER =====================
 
   if (!isInitialized) {

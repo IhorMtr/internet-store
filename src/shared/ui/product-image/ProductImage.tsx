@@ -67,7 +67,7 @@ export function ProductImage({
     return (
       <div
         className={cn(
-          'flex items-center justify-center text-center text-muted',
+          'flex items-center justify-center overflow-hidden text-center text-muted',
           variantClasses[variant],
           containerSizeClass,
           className

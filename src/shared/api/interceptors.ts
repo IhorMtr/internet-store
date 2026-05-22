@@ -45,21 +45,35 @@ function readRefreshPayload(response: RefreshResponse): RefreshPayload {
   };
 }
 
-function setMemorySession(payload: RefreshPayload): void {
-  useAuthSessionStore.getState().setSession({
+function setMemorySession(payload: RefreshPayload, expectedSessionVersion: number): boolean {
+  const authSessionStore = useAuthSessionStore.getState();
+
+  if (authSessionStore.sessionVersion !== expectedSessionVersion) {
+    return false;
+  }
+
+  authSessionStore.setSession({
     accessToken: payload.accessToken,
     user: payload.user,
   });
+
+  return true;
 }
 
 function refreshAccessToken(client: AxiosInstance): Promise<string> {
+  const expectedSessionVersion = useAuthSessionStore.getState().sessionVersion;
+
   refreshPromise ??= client
     .post<RefreshResponse>('/auth/refresh', undefined, {
       skipAuthRefresh: true,
     } as RetriableRequestConfig)
     .then(response => {
       const payload = readRefreshPayload(response.data);
-      setMemorySession(payload);
+
+      if (!setMemorySession(payload, expectedSessionVersion)) {
+        throw new Error('SESSION_INVALIDATED');
+      }
+
       return payload.accessToken;
     })
     .finally(() => {

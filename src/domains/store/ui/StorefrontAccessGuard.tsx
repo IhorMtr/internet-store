@@ -19,11 +19,21 @@ export function StorefrontAccessGuard({ children }: StorefrontAccessGuardProps) 
   const router = useRouter();
   const t = useTranslations('StorefrontAccess');
   const isInitialized = useAuthSessionStore(state => state.isInitialized);
-  const roleName = useAuthSessionStore(state => state.user?.roleName);
+  const user = useAuthSessionStore(state => state.user);
+  const roleName = user?.roleName;
 
   const isLoading = !isInitialized;
   const isAllowed = isInitialized && roleName === 'user';
+  const isUnauthorized = isInitialized && !user;
   const isForbidden = isInitialized && roleName === 'admin';
+
+  useEffect(() => {
+    if (!isUnauthorized) {
+      return;
+    }
+
+    router.replace('/auth/login');
+  }, [isUnauthorized, router]);
 
   useEffect(() => {
     if (!isForbidden) {

@@ -12,8 +12,19 @@ import type {
 
 let refreshRequest: Promise<RefreshResponse> | null = null;
 
-function applySession(accessToken: string, user: RefreshResponse['data']['user']): void {
-  useAuthSessionStore.getState().setSession({ accessToken, user });
+function applySession(
+  accessToken: string,
+  user: RefreshResponse['data']['user'],
+  expectedSessionVersion?: number
+): boolean {
+  const authSessionStore = useAuthSessionStore.getState();
+
+  if (expectedSessionVersion != null && authSessionStore.sessionVersion !== expectedSessionVersion) {
+    return false;
+  }
+
+  authSessionStore.setSession({ accessToken, user });
+  return true;
 }
 
 // ===================== REQUESTS =====================
@@ -36,10 +47,12 @@ export const authApi = {
   },
 
   async refresh(): Promise<RefreshResponse> {
+    const expectedSessionVersion = useAuthSessionStore.getState().sessionVersion;
+
     refreshRequest ??= apiClient
       .post<RefreshResponse>('/auth/refresh')
       .then(response => {
-        applySession(response.data.data.accessToken, response.data.data.user);
+        applySession(response.data.data.accessToken, response.data.data.user, expectedSessionVersion);
 
         return response.data;
       })
@@ -51,12 +64,8 @@ export const authApi = {
   },
 
   async logout(): Promise<LogoutResponse> {
-    try {
-      const response = await apiClient.post<LogoutResponse>('/auth/logout');
+    const response = await apiClient.post<LogoutResponse>('/auth/logout');
 
-      return response.data;
-    } finally {
-      useAuthSessionStore.getState().clearSession();
-    }
+    return response.data;
   },
 };

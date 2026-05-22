@@ -61,7 +61,7 @@ export function CatalogPage() {
       ) : products.length === 0 ? (
         <div className="rounded-lg border bg-surface p-6 text-sm text-muted shadow-soft">{t('empty')}</div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid items-stretch gap-4 md:grid-cols-2 xl:grid-cols-3">
           {products.map(product => (
             <ProductCard
               key={product.productId}

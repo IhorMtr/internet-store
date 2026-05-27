@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl';
 import { Link, useRouter } from '@/i18n/navigation';
 import { useLoginMutation } from '@/domains/auth/model/hooks/use-login-mutation';
 import type { LoginFormValues } from '@/domains/auth/model/types/login-form.types';
-import type { AuthUser } from '@/domains/auth/model/types/auth.types';
 import { createLoginSchema } from '@/domains/auth/model/validation/login-schema';
 import { getAuthFormErrorMessage } from '@/domains/auth/lib/auth-form-error';
 import { Button } from '@/shared/ui/button';
@@ -17,19 +16,9 @@ const initialValues: LoginFormValues = {
   password: '',
 };
 
-// ========== Types ==========
-
-type LoginFormProps = {
-  redirectPath?: string;
-};
-
-function getRoleDefaultRedirect(user: AuthUser): string {
-  return user.roleName === 'admin' ? '/admin' : '/catalog';
-}
-
 // ========== Component ==========
 
-export function LoginForm({ redirectPath }: LoginFormProps) {
+export function LoginForm() {
   // ========== Hooks ==========
 
   const router = useRouter();
@@ -55,8 +44,8 @@ export function LoginForm({ redirectPath }: LoginFormProps) {
         validationSchema={validationSchema}
         onSubmit={values => {
           loginMutation.mutate(values, {
-            onSuccess(response) {
-              router.replace(redirectPath ?? getRoleDefaultRedirect(response.data.user));
+            onSuccess() {
+              router.replace('/home');
             },
           });
         }}

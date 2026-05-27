@@ -2,7 +2,13 @@
 
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { DEFAULT_THEME, THEME_STORAGE_KEY, type ThemeName } from './theme-constants';
+import {
+  DEFAULT_THEME,
+  THEME_COOKIE_MAX_AGE_SECONDS,
+  THEME_STORAGE_KEY,
+  isThemeName,
+  type ThemeName,
+} from './theme-constants';
 
 // ========== Types ==========
 
@@ -13,16 +19,13 @@ type ThemeState = {
 
 // ========== Helpers ==========
 
-function isThemeName(value: unknown): value is ThemeName {
-  return value === 'shopcore-light' || value === 'shopcore-dark';
-}
-
 function applyTheme(theme: ThemeName): void {
   if (typeof document === 'undefined') {
     return;
   }
 
   document.documentElement.dataset.theme = theme;
+  document.cookie = `${THEME_STORAGE_KEY}=${theme}; Path=/; Max-Age=${THEME_COOKIE_MAX_AGE_SECONDS}; SameSite=Lax`;
 }
 
 // ========== Store ==========

@@ -54,6 +54,13 @@ export function HeaderActionsMenu({
             <ThemeToggle />
           </div>
 
+          <Link
+            href="/home"
+            className="ds-transition inline-flex items-center justify-center rounded-md border bg-surface px-4 py-2 text-body font-medium text-primary shadow-soft outline-none hover:bg-surface-raised focus-visible:shadow-focus"
+          >
+            {t('home')}
+          </Link>
+
           {canAccessStore ? (
             <div className="grid gap-2">
               <p className="text-caption font-semibold uppercase text-muted">{t('store')}</p>

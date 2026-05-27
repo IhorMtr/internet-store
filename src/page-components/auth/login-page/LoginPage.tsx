@@ -4,15 +4,9 @@ import { useTranslations } from 'next-intl';
 import { AuthPreferences } from '@/domains/auth/ui/auth-preferences';
 import { LoginForm } from '@/domains/auth/ui/LoginForm';
 
-// ========== Types ==========
-
-type LoginPageProps = {
-  redirectPath?: string;
-};
-
 // ========== Component ==========
 
-export function LoginPage({ redirectPath }: LoginPageProps) {
+export function LoginPage() {
   // ========== Hooks ==========
 
   const headerT = useTranslations('header');
@@ -30,7 +24,7 @@ export function LoginPage({ redirectPath }: LoginPageProps) {
           <h1 className="mt-1 text-heading font-semibold">{t('title')}</h1>
         </div>
 
-        <LoginForm redirectPath={redirectPath} />
+        <LoginForm />
       </section>
     </div>
   );

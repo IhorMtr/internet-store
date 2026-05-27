@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import Script from 'next/script';
 import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { routing, type Locale } from '@/i18n/routing';
 import { ApiQueryProvider } from '@/shared/providers/api-query-provider';
 import { ToastProvider } from '@/shared/providers/toast-provider';
-import { getThemeInitScript } from '@/shared/ui/theme/theme-init-script';
+import { DEFAULT_THEME, THEME_STORAGE_KEY, isThemeName } from '@/shared/ui/theme/theme-constants';
 import { ThemeInitializer } from '@/shared/ui/theme/theme-initializer';
 import '../globals.css';
 
@@ -49,6 +49,13 @@ function isLocale(value: string): value is Locale {
   return routing.locales.includes(value as Locale);
 }
 
+async function getInitialTheme() {
+  const cookieStore = await cookies();
+  const persistedTheme = cookieStore.get(THEME_STORAGE_KEY)?.value;
+
+  return isThemeName(persistedTheme) ? persistedTheme : DEFAULT_THEME;
+}
+
 // ========== Component ==========
 
 export default async function LocaleLayout({
@@ -67,22 +74,18 @@ export default async function LocaleLayout({
   }
 
   setRequestLocale(locale);
+  const initialTheme = await getInitialTheme();
 
   // ========== Render ==========
 
   return (
     <html
       lang={locale}
-      data-theme="shopcore-light"
+      data-theme={initialTheme}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">
-        <Script
-          id="shopcore-theme-init"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: getThemeInitScript() }}
-        />
         <NextIntlClientProvider>
           <ThemeInitializer />
           <ApiQueryProvider>

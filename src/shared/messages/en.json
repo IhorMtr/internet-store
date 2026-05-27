@@ -12,6 +12,7 @@
   },
   "header": {
     "brand": "ShopCore",
+    "home": "Home",
     "menu": "Menu",
     "adminPanel": "Admin panel",
     "settings": "Settings",
@@ -31,13 +32,79 @@
     "dark": "Dark"
   },
   "Home": {
-    "title": "Home",
-    "subtitle": "Choose where to continue.",
-    "links": {
-      "catalog": "Catalog",
-      "cart": "Cart",
-      "orders": "My orders",
-      "admin": "Admin panel"
+    "title": "Your workspace",
+    "subtitle": "Start from the section that matches what you want to do next.",
+    "greeting": "Welcome, {name}",
+    "role": {
+      "user": "User",
+      "admin": "Admin",
+      "unknown": "Role unavailable"
+    },
+    "sections": {
+      "userTitle": "Shopping actions",
+      "userDescription": "Browse products, review your cart, or check previous orders.",
+      "adminTitle": "Admin actions",
+      "adminDescription": "Manage catalog operations, fulfillment, reports, and reference data.",
+      "unknownTitle": "Access status",
+      "unknownDescription": "Your session is active, but the role could not be determined."
+    },
+    "actions": {
+      "catalog": {
+        "label": "Store",
+        "title": "Catalog",
+        "description": "Browse available products and add items to your cart."
+      },
+      "cart": {
+        "label": "Checkout",
+        "title": "Cart",
+        "description": "Review selected products before creating an order."
+      },
+      "orders": {
+        "label": "History",
+        "title": "My orders",
+        "description": "Track order statuses, payments, and delivery progress."
+      },
+      "adminDashboard": {
+        "label": "Overview",
+        "title": "Admin dashboard",
+        "description": "Open the operational summary for products, orders, and stock."
+      },
+      "products": {
+        "label": "Catalog",
+        "title": "Products",
+        "description": "Create and edit products, pricing, stock, and images."
+      },
+      "adminOrders": {
+        "label": "Fulfillment",
+        "title": "Orders",
+        "description": "Review customer orders and update shipment or payment status."
+      },
+      "reports": {
+        "label": "Analytics",
+        "title": "Reports",
+        "description": "Analyze sold products and category performance."
+      },
+      "categories": {
+        "label": "Reference",
+        "title": "Categories",
+        "description": "Maintain category names and descriptions for the catalog."
+      },
+      "suppliers": {
+        "label": "Reference",
+        "title": "Suppliers",
+        "description": "Manage supplier contact information and directory records."
+      },
+      "deliveries": {
+        "label": "Inventory",
+        "title": "Deliveries",
+        "description": "Register incoming deliveries and inspect delivery details."
+      }
+    },
+    "cta": "Open",
+    "hint": "Choose a section to continue working.",
+    "fallback": {
+      "name": "there",
+      "description": "Please sign out and sign in again if this state persists."
     }
   },
   "Store": {
